@@ -300,6 +300,16 @@ export function useContextSwitcher(): ReactNode {
   return useObservable(content$, null);
 }
 
+/**
+ * Returns the home logo icon set via `chrome.next.homeLogoIcon.set()`,
+ * or `undefined` to fall back to the Elastic logo.
+ */
+export function useHomeLogoIcon() {
+  const chrome = useChromeService();
+  const icon$ = useMemo(() => chrome.next.homeLogoIcon.get$(), [chrome]);
+  return useObservable(icon$, undefined);
+}
+
 /** Whether an inline `AppHeader` is currently mounted by the active app. */
 export function useHasInlineAppHeader(): boolean {
   const chrome = useChromeService();

@@ -278,6 +278,10 @@ export function createChromeApi({
         get$: () => state.contextSwitcher.$,
         set: state.contextSwitcher.set,
       },
+      homeLogoIcon: {
+        get$: () => state.homeLogoIcon.$,
+        set: (iconType) => state.homeLogoIcon.set(iconType),
+      },
       inlineAppHeader: {
         get$: () => state.inlineAppHeader.$,
         set: state.inlineAppHeader.set,

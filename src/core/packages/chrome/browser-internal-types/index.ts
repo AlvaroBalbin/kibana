@@ -7,6 +7,7 @@
  * License v3.0 only", or the "Server Side Public License, v 1".
  */
 
+import type { IconType } from '@elastic/eui';
 import type { ReactNode } from 'react';
 import type { Observable } from 'rxjs';
 import type { IBasePath } from '@kbn/core-http-browser';
@@ -137,6 +138,9 @@ export interface InternalChromeNext extends ChromeNext {
   };
   contextSwitcher: ChromeNext['contextSwitcher'] & {
     get$(): Observable<ReactNode>;
+  };
+  homeLogoIcon: ChromeNext['homeLogoIcon'] & {
+    get$(): Observable<IconType | undefined>;
   };
   globalSearch: ChromeNext['globalSearch'] & {
     get$(): Observable<GlobalSearchConfig | undefined>;

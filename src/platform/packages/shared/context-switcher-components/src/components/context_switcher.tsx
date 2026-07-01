@@ -17,6 +17,7 @@ import {
   EuiPopover,
   useEuiTheme,
 } from '@elastic/eui';
+import { css } from '@emotion/react';
 import { i18n } from '@kbn/i18n';
 import { SpacesListView } from './views/spaces_list';
 import type { SpacesListViewProps } from './views/spaces_list';
@@ -30,6 +31,29 @@ import { POPOVER_WIDTH_PX, type ContextSwitcherProps, type SpaceItem } from './t
 import type { SelectableListItem } from './selectable_list';
 
 const SEARCH_THRESHOLD = 15;
+
+/** Matches EuiAvatar size="l" used for context row prepend icons. */
+const CONTEXT_ROW_ICON_SIZE_PX = 32;
+
+const renderContextRowLogoIcon = (iconType: 'logoElastic') => (
+  <span
+    css={css`
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: ${CONTEXT_ROW_ICON_SIZE_PX + 8}px;
+      height: ${CONTEXT_ROW_ICON_SIZE_PX}px;
+      flex-shrink: 0;
+
+      svg {
+        width: ${CONTEXT_ROW_ICON_SIZE_PX}px;
+        height: ${CONTEXT_ROW_ICON_SIZE_PX}px;
+      }
+    `}
+  >
+    <EuiIcon type={iconType} color="text" aria-hidden={true} />
+  </span>
+);
 
 const SUBMENU_TITLES: Record<'project' | 'deployment', string> = {
   project: i18n.translate('contextSwitcherComponents.submenuTitle.projects', {
@@ -215,6 +239,8 @@ export const ContextSwitcher = ({
         size="l"
         color={euiTheme.colors.backgroundBaseSubdued}
       />
+    ) : isDeployment ? (
+      renderContextRowLogoIcon('logoElastic')
     ) : undefined;
 
   const spacesDescription =

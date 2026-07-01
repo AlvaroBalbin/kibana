@@ -7,6 +7,7 @@
  * License v3.0 only", or the "Server Side Public License, v 1".
  */
 
+import type { IconType } from '@elastic/eui';
 import type { ReactElement, ReactNode, MouseEventHandler } from 'react';
 import type { Observable } from 'rxjs';
 import type { AppMenuConfig } from '@kbn/core-chrome-app-menu-components';
@@ -207,6 +208,14 @@ export interface ChromeNext {
      * Pass `undefined` to remove. Global — persists across app changes.
      */
     set(content?: ReactNode): void;
+  };
+  /** Home logo icon override (e.g. active space solution logo). */
+  homeLogoIcon: {
+    /**
+     * Set the icon for the Chrome-Next global header home logo.
+     * Pass `undefined` to fall back to the Elastic logo. Global — persists across app changes.
+     */
+    set(iconType?: IconType): void;
   };
   appHeader: {
     /**

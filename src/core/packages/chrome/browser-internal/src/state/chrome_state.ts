@@ -7,6 +7,7 @@
  * License v3.0 only", or the "Server Side Public License, v 1".
  */
 
+import type { IconType } from '@elastic/eui';
 import type { ReactNode } from 'react';
 import type { Observable } from 'rxjs';
 import type { InternalApplicationStart } from '@kbn/core-application-browser-internal';
@@ -83,6 +84,7 @@ export interface ChromeState {
   appMenu: State<AppMenuConfig | undefined>;
   appMenuStaticItems: ArrayState<AppMenuStaticItem>;
   contextSwitcher: State<ReactNode>;
+  homeLogoIcon: State<IconType | undefined>;
   inlineAppHeader: State<boolean>;
   appHeader: State<AppHeaderConfig | undefined>;
   userMenu: State<ReactNode>;
@@ -146,6 +148,7 @@ export function createChromeState({ application, docLinks }: ChromeStateDeps): C
   const globalSearch = createState<GlobalSearchConfig | undefined>(undefined);
   const customNavLink = createState<ChromeNavLink | undefined>(undefined);
   const contextSwitcher = createState<ReactNode>(null);
+  const homeLogoIcon = createState<IconType | undefined>(undefined);
   const inlineAppHeader = createState<boolean>(false);
   const appHeader = createState<AppHeaderConfig | undefined>(undefined);
   const userMenu = createState<ReactNode>(null);
@@ -200,6 +203,7 @@ export function createChromeState({ application, docLinks }: ChromeStateDeps): C
       globalMenuLinks: globalHelpMenuLinks,
     },
     contextSwitcher,
+    homeLogoIcon,
     userMenu,
     feedbackHandler,
     newsfeedHandler,
