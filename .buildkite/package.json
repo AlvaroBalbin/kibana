@@ -16,7 +16,7 @@
     "globby": "^11.1.0",
     "json5": "^2.2.3",
     "yaml": "^2.8.1",
-    "minimatch": "^5.0.1",
+    "minimatch": "^10.2.5",
     "minimist": "^1.2.8",
     "p-limit": "^3.1.0",
     "tslib": "*"
