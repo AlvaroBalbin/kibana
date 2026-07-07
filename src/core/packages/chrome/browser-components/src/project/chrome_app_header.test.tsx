@@ -95,4 +95,19 @@ describe('useHasChromeAppHeaderContent', () => {
 
     expect(screen.getByText('has content')).toBeInTheDocument();
   });
+
+  it('detects project breadcrumb title fallback content', () => {
+    const chrome = chromeServiceMock.createStartContract();
+    chrome.project.getBreadcrumbs$.mockReturnValue(
+      new BehaviorSubject([{ text: 'My dashboard' }])
+    );
+
+    render(
+      <TestChromeProviders chrome={chrome}>
+        <HasContent />
+      </TestChromeProviders>
+    );
+
+    expect(screen.getByText('has content')).toBeInTheDocument();
+  });
 });

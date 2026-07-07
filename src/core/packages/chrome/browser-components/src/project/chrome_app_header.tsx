@@ -9,7 +9,7 @@
 
 import React, { Suspense, useMemo, useState, useLayoutEffect } from 'react';
 import { css } from '@emotion/react';
-import type { ChromeBreadcrumb, AppHeaderBack, AppHeaderConfig } from '@kbn/core-chrome-browser';
+import type { ChromeBreadcrumb, AppHeaderBack, AppHeaderConfig, AppHeaderTitle } from '@kbn/core-chrome-browser';
 import { useChromeService } from '@kbn/core-chrome-browser-context';
 import { useObservable } from '@kbn/use-observable';
 
@@ -36,8 +36,17 @@ function getBreadcrumbText(crumb: ChromeBreadcrumb): string | undefined {
 
 interface FallbackProps {
   hasContent: boolean;
+  title?: AppHeaderTitle;
   back?: AppHeaderBack[];
   menu?: AppMenuConfig;
+}
+
+function getTitleFromBreadcrumbs(breadcrumbs: ChromeBreadcrumb[]): AppHeaderTitle | undefined {
+  if (breadcrumbs.length === 0) {
+    return undefined;
+  }
+
+  return getBreadcrumbText(breadcrumbs[breadcrumbs.length - 1]);
 }
 
 function useFallbackProps(): FallbackProps {
@@ -71,10 +80,12 @@ function useFallbackProps(): FallbackProps {
     const hasBack = backTargets.length > 0;
     const hasMenu = !!appMenu?.items?.length;
     const hasBadges = !!legacyBadge || breadcrumbsBadges.length > 0;
-    const hasContent = hasBack || hasMenu || hasBadges || hasLegacyActionMenu;
+    const title = getTitleFromBreadcrumbs(breadcrumbs);
+    const hasContent = hasBack || hasMenu || hasBadges || hasLegacyActionMenu || title !== undefined;
 
     return {
       hasContent,
+      title,
       back: hasBack ? backTargets : undefined,
       menu: hasMenu ? appMenu : undefined,
     };
@@ -145,7 +156,7 @@ export const ChromeAppHeaderRenderer = React.memo(() => {
     >
       <Suspense fallback={null}>
         <AppHeaderViewLazy
-          title={config?.title}
+          title={config?.title ?? fallback.title}
           back={config?.back ?? fallback.back}
           tabs={config?.tabs}
           badges={config?.badges}
