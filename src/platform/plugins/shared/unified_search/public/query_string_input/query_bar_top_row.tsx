@@ -325,6 +325,7 @@ export const QueryBarTopRow = React.memo(
       props.submitButtonStyle ?? 'auto';
     const submitButtonIconOnly =
       submitButtonStyle === 'auto' ? !isXXLarge : submitButtonStyle === 'iconOnly';
+    const shouldFillSubmitButton = props.fillSubmitButton ?? true;
 
     useEffect(() => {
       if (submitButtonStyle !== 'auto') return;
@@ -925,7 +926,7 @@ export const QueryBarTopRow = React.memo(
 
       if (props.useBackgroundSearchButton) {
         return (
-          <EuiSplitButton color="text" size="s">
+          <EuiSplitButton color="text" fill={shouldFillSubmitButton} size="s">
             <EuiSplitButton.ActionPrimary
               aria-label={buttonLabelCancel}
               iconType="cross"
@@ -1024,7 +1025,7 @@ export const QueryBarTopRow = React.memo(
       } = getSubmitButtonProps();
 
       const updateButton = props.useBackgroundSearchButton ? (
-        <EuiSplitButton color={buttonColor} size="s">
+        <EuiSplitButton color={buttonColor} fill={shouldFillSubmitButton} size="s">
           <EuiSplitButton.ActionPrimary
             iconType={buttonIcon}
             isLoading={props.isLoading}
@@ -1058,7 +1059,7 @@ export const QueryBarTopRow = React.memo(
           onClick={onClickSubmitButton}
           size="s"
           color={buttonColor}
-          fill={false}
+          fill={shouldFillSubmitButton}
           needsUpdate={props.isDirty}
           data-test-subj="querySubmitButton"
           toolTipProps={{
