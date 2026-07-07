@@ -33,9 +33,12 @@ import {
   useSidebarWidth,
   useSideNavWidth,
 } from '@kbn/core-chrome-browser-hooks';
-import { isNextChrome } from '@kbn/core-chrome-feature-flags';
+import { isDesignExploration, isNextChrome } from '@kbn/core-chrome-feature-flags';
 import { useGlobalFooter, useHasHeaderBanner } from '@kbn/core-chrome-browser-hooks/internal';
-import { GridLayoutGlobalStyles } from '@kbn/ui-chrome-layout';
+import {
+  DesignExplorationChromeGlobalStyles,
+  GridLayoutGlobalStyles,
+} from '@kbn/ui-chrome-layout';
 import type { LayoutService, LayoutServiceStartDeps } from '../../layout_service';
 import { AppWrapper } from '../../app_containers';
 import { APP_FIXED_VIEWPORT_ID } from '../../app_fixed_viewport';
@@ -95,6 +98,8 @@ export class GridLayout implements LayoutService {
     const appComponent = application.getComponent();
     const appBannerComponent = overlays.banners.getComponent();
     const nextChrome = isNextChrome(featureFlags);
+    const designExplorationEnabled =
+      isDesignExploration(featureFlags) && isNextChrome(featureFlags);
 
     const componentDeps: ChromeComponentsDeps = {
       application,
@@ -152,6 +157,7 @@ export class GridLayout implements LayoutService {
 
       return (
         <>
+          {designExplorationEnabled && <DesignExplorationChromeGlobalStyles />}
           <GridLayoutGlobalStyles chromeStyle={chromeStyle} />
           <ChromeLayoutConfigProvider value={layoutConfig}>
             <ChromeLayout
