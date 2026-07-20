@@ -153,6 +153,11 @@ steps:
       NODE
 
 safe-outputs:
+  # The default `ubuntu-slim` runner has a hard, non-overridable 15-minute job limit
+  # (https://docs.github.com/en/actions/reference/runners/github-hosted-runners), which
+  # git operations against a repo Kibana's size can exceed (e.g. fetching a version
+  # branch into the shallow safe_outputs checkout for a PR that targets `8.x`/`9.x`).
+  runs-on: ubuntu-latest
   activation-comments: false
   report-failure-as-issue: false
   add-comment:

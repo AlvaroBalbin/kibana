@@ -67,6 +67,48 @@ steps:
       cache: yarn
   - name: Bootstrap Kibana
     run: yarn kbn bootstrap
+  # Failed-test issues record the branch each failure happened on ("First failure:
+  # [<pipeline> - <branch>](...)" in the body, "New failure: ..." in kibanamachine
+  # comments). A fix that targets a version branch needs that branch's ref plus enough
+  # commit history to compute merge-bases, but the default checkout is a shallow
+  # single-commit clone of `main`. Prefetching here — branch tip in full, history
+  # treeless (`--filter=tree:0`: commit objects only, blobs fetched lazily on demand) —
+  # takes a minute or two instead of the 10+ minute `git fetch --unshallow` the agent
+  # is otherwise forced into mid-run. No-op when all failures are on `main`.
+  - name: Resolve failing branches and prefetch their git history
+    continue-on-error: true
+    env:
+      # ISSUE_NUMBER comes from the workflow-level env.
+      GH_TOKEN: ${{ github.token }}
+    run: |
+      set -euo pipefail
+      mkdir -p /tmp/gh-aw/agent
+      {
+        gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" --jq '.body'
+        gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" --jq '.[].body'
+      } > /tmp/flaky-issue-text.txt
+      # Lines look like "First failure: [kibana-on-merge - 8.19](https://...)"; the
+      # branch is the segment after the last " - " inside the link text. Filter to
+      # plausible branch names so prose can't inject arbitrary fetch arguments.
+      branches=$(grep -hoE '(First|New) failure[^]]*\]' /tmp/flaky-issue-text.txt \
+        | sed -E 's/.* - ([^]]+)\]$/\1/' \
+        | grep -xE 'main|[0-9]+\.(x|[0-9]+)' | sort -u | tr '\n' ' ' | sed 's/ $//') || true
+      echo "Failing branches parsed from issue #${ISSUE_NUMBER}: ${branches:-<none found>}"
+      printf '%s\n' "${branches}" > /tmp/gh-aw/agent/flaky-failing-branches.txt
+      echo "FLAKY_FAILING_BRANCHES=${branches}" >> "$GITHUB_ENV"
+      need_history=0
+      for branch in ${branches}; do
+        if [ "${branch}" != "main" ]; then
+          git fetch --depth=1 origin "refs/heads/${branch}:refs/remotes/origin/${branch}" || true
+          need_history=1
+        fi
+      done
+      if [ "${need_history}" = 1 ]; then
+        # Full commit history (no trees/blobs) for merge-base computations across
+        # main and the failing version branches.
+        git fetch --unshallow --filter=tree:0 origin main ${branches} \
+          || echo "::warning::Treeless history fetch failed; the agent may need to deepen history itself"
+      fi
 
 network:
   allowed:
@@ -82,6 +124,12 @@ sandbox:
   agent: awf
 
 safe-outputs:
+  # The default `ubuntu-slim` runner has a hard, non-overridable 15-minute job limit
+  # (https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
+  # Creating a PR against a version branch makes the handler run an unbounded
+  # `git fetch origin <base>` into a shallow clone, which alone can take ~15 minutes
+  # on a repo Kibana's size — so give safe-output jobs a runner without that cap.
+  runs-on: ubuntu-latest
   activation-comments: false
   report-failure-as-issue: false
   mentions:
@@ -227,11 +275,13 @@ Open a single draft PR with the smallest possible test-side fix for this flaky-t
 
 Kibana is already bootstrapped for you. The `bk` (Buildkite) CLI is installed and authenticated and `BUILDKITE_ORGANIZATION_SLUG` is `elastic`, so you can inspect CI builds and download failure artifacts (JUnit XML, screenshots, server logs) when you need to re-investigate (see "Validate the investigation is current").
 
+The branches this issue's failures were observed on have been parsed into `/tmp/gh-aw/agent/flaky-failing-branches.txt` (space-separated, e.g. `8.19 main`; empty means parsing failed — derive them from the issue yourself). For every non-`main` branch listed, `origin/<branch>` and the commit history needed for merge-bases are already fetched.
+
 ## Steps
 
 1. **Establish a current root-cause analysis.** Read the failed-test investigator's comment(s) on the issue for the suspected root cause and proposed fix, and note the most recent one's permalink, timestamp, any attribution it makes (e.g. an implicated PR/commit), and where the failures happened, so you can cite them in the PR's Context section. **Do not treat that comment as ground truth**: a prior analysis can be based on stale data or superseded guidance, and building on a stale diagnosis is a top cause of fixes that don't hold. Assess whether it is still current and, when it is not, re-investigate from scratch before proposing anything — see [Validate the investigation is current](#validate-the-investigation-is-current). If, after that, no action is needed, skip to step 7.
 2. Read the failing test and the helpers, fixtures, and page objects it imports.
-3. Decide where the fix should land. The default target is `main`. But if the failure is on a **version branch** (check the issue's CI data / investigator comment) and `main` already carries the fix, don't target `main` — follow "Fix already on `main`", which decides between recommending a backport of the existing PR (no PR opened) and opening a best-effort PR against the version branch.
+3. Decide where the fix should land — see [Choosing the target branch](#choosing-the-target-branch). In short: `main` is the vehicle whenever the flaky pattern exists there, even if the failures were only observed on a version branch (backport labels deliver the fix there); target a version branch directly only when `main` cannot carry the fix.
 4. Apply the smallest test-side patch that addresses the root cause on the target branch. Don't add explanatory code comments to the patch by default — a good test-side fix is self-explanatory. Add one only when the fix is particularly involved or non-obvious, and keep it to 1–2 sentences; a simple change like a timeout bump never warrants a comment.
 5. Verify the patch: lint and type check it with `node scripts/eslint` and `node scripts/type_check` (and, for a Jest test, run it with `node scripts/jest`). FTR/Scout tests need a live Elasticsearch + Kibana and cannot be run here.
 6. Decide the backport strategy and open the PR (see "PR format" and "Backport label" below).
@@ -251,6 +301,30 @@ The investigator's comment is a starting hint, not a verdict you can trust blind
 To re-investigate, follow the `flaky-test-investigator` skill at `.agents/skills/flaky-test-investigator/SKILL.md` end to end (read the files in that folder directly; do not invoke the skill).
 
 - Where your fresh conclusion **departs** from the prior comment, say so and why in the PR's Context section.
+
+## Choosing the target branch
+
+Start from where the failures were observed: the issue body's `First failure: [<pipeline> - <branch>](...)` line and each kibanamachine `New failure: [<pipeline> - <branch>](...)` comment name the branch (pre-parsed into `/tmp/gh-aw/agent/flaky-failing-branches.txt`, see "Environment"). Observed branches only tell you where it *failed* — pick the target by combining them with the state of `main`:
+
+- **Failures on `main`** (alone or alongside version branches): fix on `main` and propagate with backport labels (see "Backport label").
+- **Failures only on version branch(es), but the flaky pattern still exists on `main`** (same test, same anti-pattern): still fix on `main`, applying `backport:version` plus the failing branches' `vX.Y.Z` labels. The backport delivers the fix where it failed, and a `main`-based PR is the one you can fully verify here.
+- **Failures only on version branch(es), and `main` no longer has the problem**:
+  - `main` was fixed by an identifiable PR → follow "Fix already on `main`" (backport recommendation, or an extracted fix as a version-branch PR);
+  - the test only exists on the version branch (deleted or rewritten on `main`, or skipped only there) → open the PR against that version branch (see "Version-branch mechanics").
+
+## Version-branch mechanics
+
+When the PR must target a version branch (`base` ≠ `main`):
+
+- The pre-agent setup already fetched each failing branch's tip and the treeless commit history, so `origin/<version-branch>` and merge-base computations work without further fetching. If you still need more git data, fetch in the **foreground** with `--filter=tree:0`, and never kill a running `git fetch`: an interrupted fetch leaves a stale `.git/shallow.lock` that the sandbox won't let you remove.
+- Create the fix branch from `origin/<version-branch>` and craft the patch from that branch's copy of the file(s).
+- Known `create_pull_request` limitation: patch generation computes the merge-base against `origin/main` regardless of the `base` you pass, so a version-branch fix otherwise produces a branch-divergence-sized diff and fails (`ENOBUFS`). Work around it immediately before calling `create_pull_request`:
+
+  ```bash
+  git update-ref refs/remotes/origin/main "$(git rev-parse origin/<version-branch>)"
+  ```
+
+  This makes the generated patch contain only your commits. Run it as your last git operation — it deliberately clobbers the local `origin/main` ref.
 
 ## PR format
 
@@ -329,7 +403,7 @@ Sometimes the failure is on a **version branch** (e.g. `9.3`) while `main` alrea
 When it happens, do **not** open a normal `main` PR. Find the `main` PR that already fixed it (`git log` / `git blame`, or the PR the investigator implicated), then:
 
 - **Contained `main` PR** (small and single-purpose — essentially just the fix and its test, no unrelated refactors, so it backports cleanly): do **not** open a PR. Post the "Backport the existing fix" outcome comment naming that PR and the release branch(es) that still need it. When unsure whether it backports cleanly, prefer this — a recommendation beats an unverified PR.
-- **Not-contained `main` PR** (bundles unrelated changes, so a whole-PR backport isn't safe): open a **best-effort draft PR against the failing version branch** — pass `base: <version-branch>` to `create_pull_request` (the allowed base branches already include `9.*`/`8.*`) with just the extracted fix. You're bootstrapped on `main`, so you can't lint or type-check against the version branch: craft the patch from that branch's copy of the file(s) so it applies onto `base`, and list the skipped checks under "Not verified locally" (note it targets `<branch>` and relies on that branch's CI). If other release branches still need the fix too, apply the matching `backport:version` + `vX.Y.Z` labels (per "Backport label", but leave out `main` and any branch already fixed) so it propagates there on merge.
+- **Not-contained `main` PR** (bundles unrelated changes, so a whole-PR backport isn't safe): open a **best-effort draft PR against the failing version branch** — pass `base: <version-branch>` to `create_pull_request` (the allowed base branches already include `9.*`/`8.*`) with just the extracted fix, following "Version-branch mechanics". You're bootstrapped on `main`, so you can't lint or type-check against the version branch: list the skipped checks under "Not verified locally" (note it targets `<branch>` and relies on that branch's CI). If other release branches still need the fix too, apply the matching `backport:version` + `vX.Y.Z` labels (per "Backport label", but leave out `main` and any branch already fixed) so it propagates there on merge.
 
 ## Outcome comment
 
