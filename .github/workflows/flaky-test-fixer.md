@@ -498,88 +498,29 @@ safe-outputs:
                 await github.rest.issues.updateComment({ owner, repo, comment_id: commentId, body: updated });
                 core.info(`Filled fix-PR placeholders for #${pr.number} in comment ${commentId}.`);
               }
-        # Fallback: if anything above failed, the run must still leave something
-        # actionable — edit the outcome comment to carry the PR the job would have
-        # opened (title, base, labels, and the patch itself) so a human can apply it.
-        - name: Report the proposed fix on the issue instead
+        # Fallback: if anything above failed, swap the dangling placeholders in the
+        # outcome comment for a short error notice pointing at the run logs. The
+        # proposed patch stays downloadable from the run's `agent` artifact.
+        - name: Report the failure on the issue
           if: failure()
           uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
           with:
             github-token: ${{ secrets.KIBANAMACHINE_TOKEN }}
             script: |
-              const fs = require('fs');
-              const path = require('path');
               const commentId = Number(process.env.GH_AW_COMMENT_ID);
               if (!Number.isInteger(commentId) || commentId <= 0) {
-                core.info('No outcome comment to update; the proposed fix is in the run artifacts.');
+                core.info('No outcome comment to update.');
                 return;
               }
-              // Values may have failed validation, so treat them as untrusted text.
-              const clean = (value) => String(value || '').replace(/[<>`]/g, '').slice(0, 300);
-              let request = {};
-              try {
-                const { items = [] } = JSON.parse(fs.readFileSync(process.env.GH_AW_AGENT_OUTPUT, 'utf8'));
-                request = items.find((entry) => entry.type === 'open_version_branch_pr') || {};
-              } catch {}
-              let patch = '';
-              try {
-                patch = fs.readFileSync(path.join(path.dirname(process.env.GH_AW_AGENT_OUTPUT), 'aw-version-fix.patch'), 'utf8');
-              } catch {}
-              let truncated = false;
-              if (patch.length > 40000) {
-                patch = patch.slice(0, 40000);
-                truncated = true;
-              }
-              // Fence the patch with more backticks than any run it contains, so its
-              // content cannot break out of the code block.
-              const fence = '`'.repeat(Math.max(3, (patch.match(/`+/g) || []).reduce((max, run) => Math.max(max, run.length), 0) + 1));
               const runUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
-              const base = clean(request.base);
-              const headBranch = clean(request.head_branch);
-              const labels = ['flaky-test-fixer', 'release_note:skip', ...String(request.labels || '').split(',').map((label) => clean(label.trim())).filter(Boolean)];
-              const details = [
-                '<details>',
-                `<summary>⚠️ Automatic PR creation against <code>${base || '?'}</code> failed — the proposed fix is preserved here (see the <a href="${runUrl}">run</a> for why)</summary>`,
-                '',
-                `- **Title**: ${clean(request.title) || '(missing)'}`,
-                `- **Base**: \`${base || '?'}\` · **Head branch**: \`${headBranch || '?'}\` · **Labels**: ${labels.map((label) => `\`${label}\``).join(' ')}`,
-                `- The patch is also downloadable from the [run's](${runUrl}) \`agent\` artifact at \`aw-version-fix.patch\`.`,
-                '',
-                'To open the PR manually:',
-                '',
-                '```bash',
-                `git fetch --depth=1 origin ${base || '<base>'}`,
-                `git checkout -b ${headBranch || '<head-branch>'} FETCH_HEAD`,
-                '# save the patch below as /tmp/version-fix.patch, then:',
-                'git am --3way /tmp/version-fix.patch',
-                `git push origin HEAD:refs/heads/${headBranch || '<head-branch>'}`,
-                `gh pr create --draft --repo ${process.env.GITHUB_REPOSITORY} --base ${base || '<base>'} --head ${headBranch || '<head-branch>'} ${labels.map((label) => `--label '${label}'`).join(' ')}`,
-                '```',
-                '',
-                `**Proposed patch**${truncated ? ` (truncated — full version in the [run artifacts](${runUrl}))` : ''}:`,
-                '',
-                `${fence}diff`,
-                patch || '(no patch was produced)',
-                fence,
-                '',
-                '<details><summary>Proposed PR body</summary>',
-                '',
-                // Fenced so any mentions or links inside stay inert.
-                '````markdown',
-                String(request.body || '(missing)').slice(0, 10000),
-                '````',
-                '',
-                '</details>',
-                '',
-                '</details>',
-              ].join('\n');
+              const notice = `⚠️ Something went wrong while opening the fix PR — check the [run logs](${runUrl}) for details. The proposed patch can be downloaded from the run's \`agent\` artifact (\`aw-version-fix.patch\`).`;
               const { owner, repo } = context.repo;
               const { data: comment } = await github.rest.issues.getComment({ owner, repo, comment_id: commentId });
               const body = comment.body || '';
-              let updated = body.replaceAll('%%FIX_PR_URL%%', '(not opened — see below)').replaceAll('%%FIX_PR_BADGE%%', details);
-              if (updated === body) updated = `${body}\n\n${details}`;
+              let updated = body.replaceAll('%%FIX_PR_URL%%', '(not opened)').replaceAll('%%FIX_PR_BADGE%%', notice);
+              if (updated === body) updated = `${body}\n\n${notice}`;
               await github.rest.issues.updateComment({ owner, repo, comment_id: commentId, body: updated });
-              core.info(`Reported the proposed version-branch fix in comment ${commentId}.`);
+              core.info(`Reported the PR-creation failure in comment ${commentId}.`);
 
 strict: false
 timeout-minutes: 90
@@ -647,7 +588,7 @@ When the PR must target a version branch (`base` ≠ `main`), do **not** use `cr
   ```
 
 - Call `open_version_branch_pr` with `base` (the version branch), `title`, `body`, and `head_branch` per "PR format", plus `labels` (comma-separated, see "Backport label") and optionally `reviewer` (see step 10).
-- Write the outcome comment exactly as for a `main` PR — keep the `%%FIX_PR_URL%%` / `%%FIX_PR_BADGE%%` placeholders; the `open_version_branch_pr` job fills them once the PR exists (do not call `link_fix_pr` on this path). If opening the PR fails, the job replaces the placeholders with the proposed patch and manual instructions, so the comment stays actionable either way.
+- Write the outcome comment exactly as for a `main` PR — keep the `%%FIX_PR_URL%%` / `%%FIX_PR_BADGE%%` placeholders; the `open_version_branch_pr` job fills them once the PR exists (do not call `link_fix_pr` on this path). If opening the PR fails, the job replaces the placeholders with a short error notice linking to the run logs, where the patch remains downloadable.
 
 ## PR format
 
