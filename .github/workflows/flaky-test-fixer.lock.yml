@@ -1,5 +1,5 @@
-# gh-aw-metadata: {"schema_version":"v4","frontmatter_hash":"4fcd16f58dc11850908c4d6df29c11b7de79c40cbc1654cfbfead1a50e74f4b0","body_hash":"9a6e9906444b9a6d7bce59242f18d56e34d5bfcdda8ad12ba776d2869db1d805","compiler_version":"v0.81.6","agent_id":"claude","agent_model":"opus","engine_versions":{"claude":"2.1.165"},"agent_image_runner":"kibana"}
-# gh-aw-manifest: {"version":1,"secrets":["GH_AW_CI_TRIGGER_TOKEN","GH_AW_GITHUB_MCP_SERVER_TOKEN","GH_AW_GITHUB_TOKEN","GITHUB_TOKEN","KIBANAMACHINE_TOKEN","LITELLM_API_KEY","OPS_BUILDKITE_TOKEN"],"actions":[{"repo":"actions/cache/restore","sha":"27d5ce7f107fe9357f9df03efb73ab90386fccae","version":"v5.0.5"},{"repo":"actions/cache/save","sha":"27d5ce7f107fe9357f9df03efb73ab90386fccae","version":"v5.0.5"},{"repo":"actions/checkout","sha":"9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0","version":"v7.0.0"},{"repo":"actions/checkout","sha":"de0fac2e4500dabe0009e67214ff5f5447ce83dd","version":"v6.0.2"},{"repo":"actions/download-artifact","sha":"3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c","version":"v8.0.1"},{"repo":"actions/github-script","sha":"373c709c69115d41ff229c7e5df9f8788daa9553","version":"v9"},{"repo":"actions/github-script","sha":"3a2844b7e9c422d3c10d287c895573f7108da1b3","version":"v9.0.0"},{"repo":"actions/setup-node","sha":"48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e","version":"48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e"},{"repo":"actions/upload-artifact","sha":"043fb46d1a93c77aae656e7c1c64a875d1fc6a0a","version":"v7.0.1"},{"repo":"github/gh-aw-actions/setup","sha":"ba6380cc6e5be5d21677bebe04d52fb48e3abec7","version":"v0.81.6"}],"containers":[{"image":"ghcr.io/github/gh-aw-firewall/agent:0.27.11","digest":"sha256:979723c628182da7729333f2208bb249fd25ddee579645cf9a3892d681a929c7","pinned_image":"ghcr.io/github/gh-aw-firewall/agent:0.27.11@sha256:979723c628182da7729333f2208bb249fd25ddee579645cf9a3892d681a929c7"},{"image":"ghcr.io/github/gh-aw-firewall/api-proxy:0.27.11","digest":"sha256:807e4831999b44513b0a66e5859d478dc4da7ae74ab1918cec967d513f95bf9d","pinned_image":"ghcr.io/github/gh-aw-firewall/api-proxy:0.27.11@sha256:807e4831999b44513b0a66e5859d478dc4da7ae74ab1918cec967d513f95bf9d"},{"image":"ghcr.io/github/gh-aw-firewall/squid:0.27.11","digest":"sha256:ff27ea0525ad953a6adee28a5fbe9d2e22be47dbec755c15767af4ea3f91df7d","pinned_image":"ghcr.io/github/gh-aw-firewall/squid:0.27.11@sha256:ff27ea0525ad953a6adee28a5fbe9d2e22be47dbec755c15767af4ea3f91df7d"},{"image":"ghcr.io/github/gh-aw-mcpg:v0.3.30","digest":"sha256:35625d1a2269b1238606078c879f59a91cffc4ac33eb54bf39c6418822c1a8be","pinned_image":"ghcr.io/github/gh-aw-mcpg:v0.3.30@sha256:35625d1a2269b1238606078c879f59a91cffc4ac33eb54bf39c6418822c1a8be"},{"image":"ghcr.io/github/gh-aw-node","digest":"sha256:529d02eb970b1161aa25c593a9c3df57fdfad5a8add328cb3b6eccef66f3183b","pinned_image":"ghcr.io/github/gh-aw-node@sha256:529d02eb970b1161aa25c593a9c3df57fdfad5a8add328cb3b6eccef66f3183b"},{"image":"ghcr.io/github/github-mcp-server:v1.4.0","digest":"sha256:2afb26356481d1a350e14544a6e160f7f7ec1561a1ea309b823665abf0309036","pinned_image":"ghcr.io/github/github-mcp-server:v1.4.0@sha256:2afb26356481d1a350e14544a6e160f7f7ec1561a1ea309b823665abf0309036"}]}
+# gh-aw-metadata: {"schema_version":"v4","frontmatter_hash":"cc8de3f95f5eb76220069ca24560c8219781285e6fdaa87ea56f1a8409d1161d","body_hash":"b5629374649ab7ce3a413483db4343b4f154479bc5bc217cf21a77f747d2a771","compiler_version":"v0.81.6","agent_id":"claude","agent_model":"opus","engine_versions":{"claude":"2.1.165"},"agent_image_runner":"kibana"}
+# gh-aw-manifest: {"version":1,"secrets":["GH_AW_CI_TRIGGER_TOKEN","GH_AW_GITHUB_MCP_SERVER_TOKEN","GH_AW_GITHUB_TOKEN","GITHUB_TOKEN","KIBANAMACHINE_TOKEN","LITELLM_API_KEY","OPS_BUILDKITE_TOKEN"],"actions":[{"repo":"actions/cache/restore","sha":"27d5ce7f107fe9357f9df03efb73ab90386fccae","version":"v5.0.5"},{"repo":"actions/cache/save","sha":"27d5ce7f107fe9357f9df03efb73ab90386fccae","version":"v5.0.5"},{"repo":"actions/checkout","sha":"9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0","version":"v7.0.0"},{"repo":"actions/checkout","sha":"de0fac2e4500dabe0009e67214ff5f5447ce83dd","version":"de0fac2e4500dabe0009e67214ff5f5447ce83dd"},{"repo":"actions/download-artifact","sha":"3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c","version":"v8.0.1"},{"repo":"actions/github-script","sha":"373c709c69115d41ff229c7e5df9f8788daa9553","version":"v9"},{"repo":"actions/github-script","sha":"3a2844b7e9c422d3c10d287c895573f7108da1b3","version":"v9.0.0"},{"repo":"actions/setup-node","sha":"48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e","version":"48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e"},{"repo":"actions/upload-artifact","sha":"043fb46d1a93c77aae656e7c1c64a875d1fc6a0a","version":"v7.0.1"},{"repo":"github/gh-aw-actions/setup","sha":"ba6380cc6e5be5d21677bebe04d52fb48e3abec7","version":"v0.81.6"}],"containers":[{"image":"ghcr.io/github/gh-aw-firewall/agent:0.27.11","digest":"sha256:979723c628182da7729333f2208bb249fd25ddee579645cf9a3892d681a929c7","pinned_image":"ghcr.io/github/gh-aw-firewall/agent:0.27.11@sha256:979723c628182da7729333f2208bb249fd25ddee579645cf9a3892d681a929c7"},{"image":"ghcr.io/github/gh-aw-firewall/api-proxy:0.27.11","digest":"sha256:807e4831999b44513b0a66e5859d478dc4da7ae74ab1918cec967d513f95bf9d","pinned_image":"ghcr.io/github/gh-aw-firewall/api-proxy:0.27.11@sha256:807e4831999b44513b0a66e5859d478dc4da7ae74ab1918cec967d513f95bf9d"},{"image":"ghcr.io/github/gh-aw-firewall/squid:0.27.11","digest":"sha256:ff27ea0525ad953a6adee28a5fbe9d2e22be47dbec755c15767af4ea3f91df7d","pinned_image":"ghcr.io/github/gh-aw-firewall/squid:0.27.11@sha256:ff27ea0525ad953a6adee28a5fbe9d2e22be47dbec755c15767af4ea3f91df7d"},{"image":"ghcr.io/github/gh-aw-mcpg:v0.3.30","digest":"sha256:35625d1a2269b1238606078c879f59a91cffc4ac33eb54bf39c6418822c1a8be","pinned_image":"ghcr.io/github/gh-aw-mcpg:v0.3.30@sha256:35625d1a2269b1238606078c879f59a91cffc4ac33eb54bf39c6418822c1a8be"},{"image":"ghcr.io/github/gh-aw-node","digest":"sha256:529d02eb970b1161aa25c593a9c3df57fdfad5a8add328cb3b6eccef66f3183b","pinned_image":"ghcr.io/github/gh-aw-node@sha256:529d02eb970b1161aa25c593a9c3df57fdfad5a8add328cb3b6eccef66f3183b"},{"image":"ghcr.io/github/github-mcp-server:v1.4.0","digest":"sha256:2afb26356481d1a350e14544a6e160f7f7ec1561a1ea309b823665abf0309036","pinned_image":"ghcr.io/github/github-mcp-server:v1.4.0@sha256:2afb26356481d1a350e14544a6e160f7f7ec1561a1ea309b823665abf0309036"}]}
 # This file was automatically generated by gh-aw (v0.81.6). DO NOT EDIT. To debug this workflow, load the skill at https://github.com/github/gh-aw/blob/main/debug.md
 #
 #    ___                   _   _      
@@ -47,6 +47,7 @@
 #   - actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
 #   - actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
 #   - actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+#   - actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # de0fac2e4500dabe0009e67214ff5f5447ce83dd
 #   - actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 #   - actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
 #   - actions/github-script@373c709c69115d41ff229c7e5df9f8788daa9553 # v9
@@ -101,7 +102,7 @@ jobs:
       needs.pre_activation.outputs.activated == 'true' && ((github.event_name == 'workflow_dispatch' && github.event.inputs.issue_number != '') ||
       (github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == 'ai:fix-flaky' &&
       !github.event.issue.pull_request))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       actions: read
       contents: read
@@ -297,23 +298,23 @@ jobs:
         run: |
           bash "${RUNNER_TEMP}/gh-aw/actions/create_prompt_first.sh"
           {
-          cat << 'GH_AW_PROMPT_4ed39146f08c91c9_EOF'
+          cat << 'GH_AW_PROMPT_c96c8e4ee5120cc4_EOF'
           <system>
-          GH_AW_PROMPT_4ed39146f08c91c9_EOF
+          GH_AW_PROMPT_c96c8e4ee5120cc4_EOF
           cat "${RUNNER_TEMP}/gh-aw/prompts/xpia.md"
           cat "${RUNNER_TEMP}/gh-aw/prompts/temp_folder_prompt.md"
           cat "${RUNNER_TEMP}/gh-aw/prompts/markdown.md"
           cat "${RUNNER_TEMP}/gh-aw/prompts/safe_outputs_prompt.md"
-          cat << 'GH_AW_PROMPT_4ed39146f08c91c9_EOF'
+          cat << 'GH_AW_PROMPT_c96c8e4ee5120cc4_EOF'
           <safe-output-tools>
-          Tools: add_comment, create_pull_request, remove_labels, missing_tool, missing_data, noop, link_fix_pr, request_fix_review
-          GH_AW_PROMPT_4ed39146f08c91c9_EOF
+          Tools: add_comment, create_pull_request, remove_labels, missing_tool, missing_data, noop, link_fix_pr, open_version_branch_pr, request_fix_review
+          GH_AW_PROMPT_c96c8e4ee5120cc4_EOF
           cat "${RUNNER_TEMP}/gh-aw/prompts/safe_outputs_create_pull_request.md"
-          cat << 'GH_AW_PROMPT_4ed39146f08c91c9_EOF'
+          cat << 'GH_AW_PROMPT_c96c8e4ee5120cc4_EOF'
           </safe-output-tools>
-          GH_AW_PROMPT_4ed39146f08c91c9_EOF
+          GH_AW_PROMPT_c96c8e4ee5120cc4_EOF
           cat "${RUNNER_TEMP}/gh-aw/prompts/mcp_cli_tools_prompt.md"
-          cat << 'GH_AW_PROMPT_4ed39146f08c91c9_EOF'
+          cat << 'GH_AW_PROMPT_c96c8e4ee5120cc4_EOF'
           <github-context>
           The following GitHub context information is available for this workflow:
           {{#if github.actor}}
@@ -342,13 +343,13 @@ jobs:
           {{/if}}
           </github-context>
           
-          GH_AW_PROMPT_4ed39146f08c91c9_EOF
+          GH_AW_PROMPT_c96c8e4ee5120cc4_EOF
           cat "${RUNNER_TEMP}/gh-aw/prompts/github_mcp_tools_with_safeoutputs_prompt.md"
-          cat << 'GH_AW_PROMPT_4ed39146f08c91c9_EOF'
+          cat << 'GH_AW_PROMPT_c96c8e4ee5120cc4_EOF'
           </system>
           {{#runtime-import .github/workflows/buildkite-cli-setup.md}}
           {{#runtime-import .github/workflows/flaky-test-fixer.md}}
-          GH_AW_PROMPT_4ed39146f08c91c9_EOF
+          GH_AW_PROMPT_c96c8e4ee5120cc4_EOF
           } > "$GH_AW_PROMPT"
       - name: Interpolate variables and render templates
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
@@ -604,9 +605,9 @@ jobs:
           mkdir -p "${RUNNER_TEMP}/gh-aw/safeoutputs"
           mkdir -p /tmp/gh-aw/safeoutputs
           mkdir -p /tmp/gh-aw/mcp-logs/safeoutputs
-          cat > "${RUNNER_TEMP}/gh-aw/safeoutputs/config.json" << 'GH_AW_SAFE_OUTPUTS_CONFIG_96541c30655094f6_EOF'
-          {"add_comment":{"hide_older_comments":true,"max":1,"target":"${{ github.event.issue.number || github.event.inputs.issue_number }}"},"create_pull_request":{"allowed_base_branches":["main","9.*","8.*","7.*"],"base_branch":"main","draft":true,"github-token":"${GH_AW_SECRET_KIBANAMACHINE_TOKEN}","if_no_changes":"ignore","labels":["flaky-test-fixer","release_note:skip"],"max":1,"max_patch_files":100,"max_patch_size":4096,"patch_format":"am","protect_top_level_dot_folders":true,"protected_files":["package.json","bun.lockb","bunfig.toml","deno.json","deno.jsonc","deno.lock","global.json","NuGet.Config","Directory.Packages.props","mix.exs","mix.lock","go.mod","go.sum","stack.yaml","stack.yaml.lock","pom.xml","build.gradle","build.gradle.kts","settings.gradle","settings.gradle.kts","gradle.properties","package-lock.json","yarn.lock","pnpm-lock.yaml","npm-shrinkwrap.json","requirements.txt","Pipfile","Pipfile.lock","pyproject.toml","setup.py","setup.cfg","Gemfile","Gemfile.lock","uv.lock","CODEOWNERS","DESIGN.md","README.md","CONTRIBUTING.md","CHANGELOG.md","SECURITY.md","CODE_OF_CONDUCT.md","CLAUDE.md","AGENTS.md"],"protected_files_policy":"fallback-to-issue","reviewers":["${GITHUB_ACTOR}"]},"create_report_incomplete_issue":{},"link-fix-pr":{"description":"Replace the %%FIX_PR_URL%% and %%FIX_PR_BADGE%% placeholders in the outcome comment with the newly-opened fix PR link and a live PR-state badge. Call this exactly once, and only after you have opened a draft PR.","inputs":{"confirm":{"default":null,"description":"Set to true to link the outcome comment to the opened fix PR. Only call this after a PR has been opened.","required":true,"type":"boolean"}}},"mentions":{"allowed":["${GITHUB_ACTOR}"],"allowedCollaborators":true},"missing_data":{},"missing_tool":{},"noop":{"max":1,"report-as-issue":"true"},"remove_labels":{"allowed":["ai:fix-flaky"],"max":1,"target":"${{ github.event.issue.number || github.event.inputs.issue_number }}"},"report_incomplete":{},"request-fix-review":{"description":"Request a review on the fix PR from the author of the PR that introduced the flaky test. Only pass a real, non-bot GitHub login.","inputs":{"author":{"default":null,"description":"GitHub login (no leading @) of the introducing PR's author to request as a reviewer on the fix PR.","required":true,"type":"string"}}}}
-          GH_AW_SAFE_OUTPUTS_CONFIG_96541c30655094f6_EOF
+          cat > "${RUNNER_TEMP}/gh-aw/safeoutputs/config.json" << 'GH_AW_SAFE_OUTPUTS_CONFIG_418a366351aa9b0e_EOF'
+          {"add_comment":{"hide_older_comments":true,"max":1,"target":"${{ github.event.issue.number || github.event.inputs.issue_number }}"},"create_pull_request":{"allowed_base_branches":["main"],"base_branch":"main","draft":true,"github-token":"${GH_AW_SECRET_KIBANAMACHINE_TOKEN}","if_no_changes":"ignore","labels":["flaky-test-fixer","release_note:skip"],"max":1,"max_patch_files":100,"max_patch_size":4096,"patch_format":"am","protect_top_level_dot_folders":true,"protected_files":["package.json","bun.lockb","bunfig.toml","deno.json","deno.jsonc","deno.lock","global.json","NuGet.Config","Directory.Packages.props","mix.exs","mix.lock","go.mod","go.sum","stack.yaml","stack.yaml.lock","pom.xml","build.gradle","build.gradle.kts","settings.gradle","settings.gradle.kts","gradle.properties","package-lock.json","yarn.lock","pnpm-lock.yaml","npm-shrinkwrap.json","requirements.txt","Pipfile","Pipfile.lock","pyproject.toml","setup.py","setup.cfg","Gemfile","Gemfile.lock","uv.lock","CODEOWNERS","DESIGN.md","README.md","CONTRIBUTING.md","CHANGELOG.md","SECURITY.md","CODE_OF_CONDUCT.md","CLAUDE.md","AGENTS.md"],"protected_files_policy":"fallback-to-issue","reviewers":["${GITHUB_ACTOR}"]},"create_report_incomplete_issue":{},"link-fix-pr":{"description":"Replace the %%FIX_PR_URL%% and %%FIX_PR_BADGE%% placeholders in the outcome comment with the newly-opened fix PR link and a live PR-state badge. Call this exactly once, and only after you have opened a draft PR via create_pull_request. Never call it for a version-branch PR opened via open_version_branch_pr — that job fills the placeholders itself.","inputs":{"confirm":{"default":null,"description":"Set to true to link the outcome comment to the opened fix PR. Only call this after a PR has been opened.","required":true,"type":"boolean"}}},"mentions":{"allowed":["${GITHUB_ACTOR}"],"allowedCollaborators":true},"missing_data":{},"missing_tool":{},"noop":{"max":1,"report-as-issue":"true"},"open-version-branch-pr":{"description":"Open the draft fix PR against a version branch (base ≠ main). Before calling this, commit your fix on a branch created from origin/\u003cbase\u003e and export the patch with `git format-patch origin/\u003cbase\u003e..HEAD --stdout \u003e /tmp/gh-aw/aw-version-fix.patch` (see \"Version-branch mechanics\"). Call it at most once, always instead of — never alongside — create_pull_request.","inputs":{"base":{"default":null,"description":"Version branch the PR targets (e.g. 8.19, 9.3, 8.x). Never main — main-based PRs go through create_pull_request.","required":true,"type":"string"},"body":{"default":null,"description":"PR body in Markdown, following the \"PR format\" section.","required":true,"type":"string"},"head_branch":{"default":null,"description":"Source branch name for the PR, following the fix/flaky-\u003cissue-number\u003e-\u003cshort-kebab-slug\u003e convention.","required":true,"type":"string"},"labels":{"default":null,"description":"Comma-separated backport labels (backport:skip, backport:all-open, backport:version, vX.Y.Z), per \"Backport label\". flaky-test-fixer and release_note:skip are added automatically. Omit if unsure.","required":false,"type":"string"},"reviewer":{"default":null,"description":"GitHub login (no leading @) of the introducing PR's author to request as a reviewer, only if you confidently identified a real, non-bot one (same rules as request_fix_review). The requester is always added.","required":false,"type":"string"},"title":{"default":null,"description":"PR title, following the \"PR format\" section.","required":true,"type":"string"}}},"remove_labels":{"allowed":["ai:fix-flaky"],"max":1,"target":"${{ github.event.issue.number || github.event.inputs.issue_number }}"},"report_incomplete":{},"request-fix-review":{"description":"Request a review on the fix PR from the author of the PR that introduced the flaky test. Only pass a real, non-bot GitHub login.","inputs":{"author":{"default":null,"description":"GitHub login (no leading @) of the introducing PR's author to request as a reviewer on the fix PR.","required":true,"type":"string"}}}}
+          GH_AW_SAFE_OUTPUTS_CONFIG_418a366351aa9b0e_EOF
       - name: Generate Safe Outputs Tools
         env:
           GH_AW_TOOLS_META_JSON: |
@@ -619,7 +620,7 @@ jobs:
               "repo_params": {},
               "dynamic_tools": [
                 {
-                  "description": "Replace the %%FIX_PR_URL%% and %%FIX_PR_BADGE%% placeholders in the outcome comment with the newly-opened fix PR link and a live PR-state badge. Call this exactly once, and only after you have opened a draft PR.",
+                  "description": "Replace the %%FIX_PR_URL%% and %%FIX_PR_BADGE%% placeholders in the outcome comment with the newly-opened fix PR link and a live PR-state badge. Call this exactly once, and only after you have opened a draft PR via create_pull_request. Never call it for a version-branch PR opened via open_version_branch_pr — that job fills the placeholders itself.",
                   "inputSchema": {
                     "additionalProperties": false,
                     "properties": {
@@ -634,6 +635,46 @@ jobs:
                     "type": "object"
                   },
                   "name": "link_fix_pr"
+                },
+                {
+                  "description": "Open the draft fix PR against a version branch (base ≠ main). Before calling this, commit your fix on a branch created from origin/\u003cbase\u003e and export the patch with `git format-patch origin/\u003cbase\u003e..HEAD --stdout \u003e /tmp/gh-aw/aw-version-fix.patch` (see \"Version-branch mechanics\"). Call it at most once, always instead of — never alongside — create_pull_request.",
+                  "inputSchema": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "base": {
+                        "description": "Version branch the PR targets (e.g. 8.19, 9.3, 8.x). Never main — main-based PRs go through create_pull_request.",
+                        "type": "string"
+                      },
+                      "body": {
+                        "description": "PR body in Markdown, following the \"PR format\" section.",
+                        "type": "string"
+                      },
+                      "head_branch": {
+                        "description": "Source branch name for the PR, following the fix/flaky-\u003cissue-number\u003e-\u003cshort-kebab-slug\u003e convention.",
+                        "type": "string"
+                      },
+                      "labels": {
+                        "description": "Comma-separated backport labels (backport:skip, backport:all-open, backport:version, vX.Y.Z), per \"Backport label\". flaky-test-fixer and release_note:skip are added automatically. Omit if unsure.",
+                        "type": "string"
+                      },
+                      "reviewer": {
+                        "description": "GitHub login (no leading @) of the introducing PR's author to request as a reviewer, only if you confidently identified a real, non-bot one (same rules as request_fix_review). The requester is always added.",
+                        "type": "string"
+                      },
+                      "title": {
+                        "description": "PR title, following the \"PR format\" section.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "base",
+                      "body",
+                      "head_branch",
+                      "title"
+                    ],
+                    "type": "object"
+                  },
+                  "name": "open_version_branch_pr"
                 },
                 {
                   "description": "Request a review on the fix PR from the author of the PR that introduced the flaky test. Only pass a real, non-bot GitHub login.",
@@ -1230,12 +1271,13 @@ jobs:
       - agent
       - detection
       - link_fix_pr
+      - open_version_branch_pr
       - request_fix_review
       - safe_outputs
     if: >
       always() && (needs.agent.result != 'skipped' || needs.activation.outputs.lockdown_check_failed == 'true' ||
       needs.activation.outputs.stale_lock_file_failed == 'true' || needs.activation.outputs.daily_ai_credits_exceeded == 'true')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       contents: write
       issues: write
@@ -1784,12 +1826,313 @@ jobs:
             await github.rest.issues.updateComment({ owner, repo, comment_id: commentId, body: updated });
             core.info(`Filled fix-PR placeholders for #${prNumber} in comment ${commentId}.`);
 
+  open_version_branch_pr:
+    needs:
+      - agent
+      - detection
+      - safe_outputs
+    if: >
+      (!cancelled()) && needs.agent.result != 'skipped' && contains(needs.agent.outputs.output_types, 'open_version_branch_pr') &&
+      (needs.safe_outputs.result == 'success')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Download agent output artifact
+        continue-on-error: true
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: agent
+          path: ${{ runner.temp }}/gh-aw/safe-jobs/
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        env:
+          GH_AW_AGENT_OUTPUT: ${{ runner.temp }}/gh-aw/safe-jobs/agent_output.json
+          GH_AW_COMMENT_ID: ${{ needs.safe_outputs.outputs.comment_id }}
+          GH_AW_REQUESTED_BY: ${{ github.actor }}
+        with:
+          persist-credentials: true
+          token: ${{ secrets.KIBANAMACHINE_TOKEN }}
+      - name: Validate inputs and stage the patch
+        id: validate
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          GH_AW_AGENT_OUTPUT: ${{ runner.temp }}/gh-aw/safe-jobs/agent_output.json
+          GH_AW_COMMENT_ID: ${{ needs.safe_outputs.outputs.comment_id }}
+          GH_AW_REQUESTED_BY: ${{ github.actor }}
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            // Custom safe-jobs read the agent's tool inputs from GH_AW_AGENT_OUTPUT,
+            // not from the job's inputs context.
+            const outputPath = process.env.GH_AW_AGENT_OUTPUT;
+            if (!outputPath || !fs.existsSync(outputPath)) {
+              core.setFailed('Agent output not found; cannot open a version-branch PR.');
+              return;
+            }
+            const { items = [] } = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+            const request = items.find((entry) => entry.type === 'open_version_branch_pr');
+            if (!request) {
+              core.setFailed('No open_version_branch_pr request found in the agent output.');
+              return;
+            }
+            const errors = [];
+            const base = String(request.base || '').trim();
+            if (!/^[0-9]+\.(x|[0-9]+)$/.test(base)) {
+              errors.push(`base ${JSON.stringify(base)} is not a version branch (expected e.g. 8.19 or 9.x; main-based PRs go through create_pull_request)`);
+            }
+            const headBranch = String(request.head_branch || '').trim();
+            if (!/^fix\/flaky-[0-9]+(-[a-z0-9]+)*$/.test(headBranch) || headBranch.length > 100) {
+              errors.push(`head_branch ${JSON.stringify(headBranch)} does not match fix/flaky-<issue-number>-<short-kebab-slug>`);
+            }
+            const title = String(request.title || '').replace(/\s+/g, ' ').trim();
+            if (!title || title.length > 256) {
+              errors.push('title is missing or longer than 256 characters');
+            }
+            const body = String(request.body || '').trim();
+            if (!body || body.length > 60000) {
+              errors.push('body is missing or longer than 60000 characters');
+            }
+            // Same allowlist as create_pull_request's allowed-labels.
+            const exactLabels = new Set(['backport:skip', 'backport:all-open', 'backport:version']);
+            const labels = String(request.labels || '').split(',').map((label) => label.trim()).filter(Boolean);
+            for (const label of labels) {
+              if (!exactLabels.has(label) && !/^v[89]\.[0-9]+\.[0-9]+$/.test(label)) {
+                errors.push(`label ${JSON.stringify(label)} is not in the allowlist`);
+              }
+            }
+            const reviewer = String(request.reviewer || '').trim().replace(/^@/, '');
+            if (reviewer && !/^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$/.test(reviewer)) {
+              errors.push(`reviewer ${JSON.stringify(reviewer)} is not a valid GitHub login`);
+            }
+            // The patch travels inside the agent artifact (downloaded next to
+            // agent_output.json), never through prose the agent could be tricked into echoing.
+            const patchPath = path.join(path.dirname(outputPath), 'aw-version-fix.patch');
+            if (!fs.existsSync(patchPath)) {
+              errors.push('aw-version-fix.patch was not found in the agent artifact (the agent must write it with git format-patch before calling this tool)');
+            } else {
+              const patchSize = fs.statSync(patchPath).size;
+              if (patchSize === 0) errors.push('aw-version-fix.patch is empty');
+              if (patchSize > 4 * 1024 * 1024) errors.push('aw-version-fix.patch is larger than the 4MB cap');
+            }
+            if (errors.length) {
+              core.setFailed(`Refusing to open a version-branch PR:\n- ${errors.join('\n- ')}`);
+              return;
+            }
+            fs.copyFileSync(patchPath, path.join(process.env.RUNNER_TEMP, 'version-fix.patch'));
+            // The body goes through a file (not a step output) so its content can't
+            // leak into shell interpolation or output parsing.
+            fs.writeFileSync(path.join(process.env.RUNNER_TEMP, 'pr_body.md'), body);
+            core.setOutput('base', base);
+            core.setOutput('head_branch', headBranch);
+            core.setOutput('title', title);
+            core.setOutput('labels', ['flaky-test-fixer', 'release_note:skip', ...labels].join(','));
+            core.setOutput('reviewer', reviewer);
+      - name: Apply the patch onto the base branch and push
+        run: |
+          set -euo pipefail
+          git config user.name "kibanamachine"
+          git config user.email "42973632+kibanamachine@users.noreply.github.com"
+          # Bounded fetch: only the base branch's tip. Unlike the create_pull_request
+          # handler's unbounded history fetch, this finishes in a couple of minutes.
+          git fetch --depth=1 origin "refs/heads/${BASE}:refs/remotes/origin/${BASE}"
+          git checkout -b "${HEAD_BRANCH}" "refs/remotes/origin/${BASE}"
+          git am --3way "${RUNNER_TEMP}/version-fix.patch"
+          changed_files=$(git diff --name-only "refs/remotes/origin/${BASE}..HEAD")
+          file_count=$(printf '%s\n' "${changed_files}" | grep -c . || true)
+          echo "Patch changes ${file_count} file(s):"
+          printf '%s\n' "${changed_files}"
+          if [ "${file_count}" -eq 0 ]; then
+            echo "::error::The patch produced no changes on ${BASE}"
+            exit 1
+          fi
+          if [ "${file_count}" -gt 100 ]; then
+            echo "::error::The patch changes ${file_count} files (cap is 100)"
+            exit 1
+          fi
+          # Mirror the create_pull_request handler's protected-path policy: no
+          # top-level dot-folders (.github, .buildkite, ...) and no manifest/lock/
+          # ownership files anywhere. A test-side fix never needs these.
+          while IFS= read -r changed_file; do
+            [ -z "${changed_file}" ] && continue
+            case "${changed_file}" in
+              .*)
+                echo "::error::The patch touches protected path ${changed_file}"
+                exit 1
+                ;;
+            esac
+            case "$(basename "${changed_file}")" in
+              package.json|yarn.lock|package-lock.json|pnpm-lock.yaml|npm-shrinkwrap.json|CODEOWNERS|AGENTS.md|CLAUDE.md|README.md|renovate.json)
+                echo "::error::The patch touches protected file ${changed_file}"
+                exit 1
+                ;;
+            esac
+          done <<< "${changed_files}"
+          # --force keeps re-runs working if a previous attempt already pushed the
+          # branch; the namespace is validated to fix/flaky-* above.
+          git push --force origin "HEAD:refs/heads/${HEAD_BRANCH}"
+        env:
+          BASE: ${{ steps.validate.outputs.base }}
+          GH_AW_AGENT_OUTPUT: ${{ runner.temp }}/gh-aw/safe-jobs/agent_output.json
+          GH_AW_COMMENT_ID: ${{ needs.safe_outputs.outputs.comment_id }}
+          GH_AW_REQUESTED_BY: ${{ github.actor }}
+          HEAD_BRANCH: ${{ steps.validate.outputs.head_branch }}
+      - name: Open the draft PR and link the outcome comment
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          GH_AW_AGENT_OUTPUT: ${{ runner.temp }}/gh-aw/safe-jobs/agent_output.json
+          GH_AW_BASE: ${{ steps.validate.outputs.base }}
+          GH_AW_COMMENT_ID: ${{ needs.safe_outputs.outputs.comment_id }}
+          GH_AW_HEAD_BRANCH: ${{ steps.validate.outputs.head_branch }}
+          GH_AW_INTRODUCER: ${{ steps.validate.outputs.reviewer }}
+          GH_AW_PR_LABELS: ${{ steps.validate.outputs.labels }}
+          GH_AW_PR_TITLE: ${{ steps.validate.outputs.title }}
+          GH_AW_REQUESTED_BY: ${{ github.actor }}
+        with:
+          github-token: ${{ secrets.KIBANAMACHINE_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const { owner, repo } = context.repo;
+            const body = fs.readFileSync(path.join(process.env.RUNNER_TEMP, 'pr_body.md'), 'utf8');
+            const { data: pr } = await github.rest.pulls.create({
+              owner,
+              repo,
+              base: process.env.GH_AW_BASE,
+              head: process.env.GH_AW_HEAD_BRANCH,
+              title: process.env.GH_AW_PR_TITLE,
+              body,
+              draft: true,
+            });
+            core.info(`Opened draft PR #${pr.number}: ${pr.html_url}`);
+            const labels = (process.env.GH_AW_PR_LABELS || '').split(',').filter(Boolean);
+            if (labels.length) {
+              await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels });
+            }
+            // The request_fix_review job only serves create_pull_request PRs (it is
+            // gated on safe_outputs' created_pr_number), so request reviewers here.
+            const isBot = (login) => !login || login.endsWith('[bot]') || login === 'kibanamachine';
+            const reviewers = [];
+            const requestedBy = (process.env.GH_AW_REQUESTED_BY || '').trim();
+            if (!isBot(requestedBy)) reviewers.push(requestedBy);
+            const introducer = (process.env.GH_AW_INTRODUCER || '').trim();
+            if (introducer && !isBot(introducer) && !reviewers.includes(introducer)) reviewers.push(introducer);
+            if (reviewers.length) {
+              try {
+                await github.rest.pulls.requestReviewers({ owner, repo, pull_number: pr.number, reviewers });
+                core.info(`Requested review from ${reviewers.join(', ')} on #${pr.number}.`);
+              } catch (err) {
+                // Non-fatal: GitHub 422s if a user can't review (not a collaborator, etc.).
+                core.warning(`Could not request reviewers on #${pr.number}: ${err.status || ''} ${err.message}`);
+              }
+            }
+            // Fill the outcome-comment placeholders — the link_fix_pr job only runs
+            // for PRs created by safe_outputs, so this path does it itself.
+            const commentId = Number(process.env.GH_AW_COMMENT_ID);
+            if (!Number.isInteger(commentId) || commentId <= 0) {
+              core.info('No outcome comment id; skipping placeholder fill.');
+              return;
+            }
+            const { data: comment } = await github.rest.issues.getComment({ owner, repo, comment_id: commentId });
+            const badge = `[<img src="https://img.shields.io/github/pulls/detail/state/${owner}/${repo}/${pr.number}">](${pr.html_url})`;
+            const updated = (comment.body || '').replaceAll('%%FIX_PR_URL%%', pr.html_url).replaceAll('%%FIX_PR_BADGE%%', badge);
+            if (updated !== comment.body) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: commentId, body: updated });
+              core.info(`Filled fix-PR placeholders for #${pr.number} in comment ${commentId}.`);
+            }
+      - name: Report the proposed fix on the issue instead
+        if: failure()
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          GH_AW_AGENT_OUTPUT: ${{ runner.temp }}/gh-aw/safe-jobs/agent_output.json
+          GH_AW_COMMENT_ID: ${{ needs.safe_outputs.outputs.comment_id }}
+          GH_AW_REQUESTED_BY: ${{ github.actor }}
+        with:
+          github-token: ${{ secrets.KIBANAMACHINE_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const commentId = Number(process.env.GH_AW_COMMENT_ID);
+            if (!Number.isInteger(commentId) || commentId <= 0) {
+              core.info('No outcome comment to update; the proposed fix is in the run artifacts.');
+              return;
+            }
+            // Values may have failed validation, so treat them as untrusted text.
+            const clean = (value) => String(value || '').replace(/[<>`]/g, '').slice(0, 300);
+            let request = {};
+            try {
+              const { items = [] } = JSON.parse(fs.readFileSync(process.env.GH_AW_AGENT_OUTPUT, 'utf8'));
+              request = items.find((entry) => entry.type === 'open_version_branch_pr') || {};
+            } catch {}
+            let patch = '';
+            try {
+              patch = fs.readFileSync(path.join(path.dirname(process.env.GH_AW_AGENT_OUTPUT), 'aw-version-fix.patch'), 'utf8');
+            } catch {}
+            let truncated = false;
+            if (patch.length > 40000) {
+              patch = patch.slice(0, 40000);
+              truncated = true;
+            }
+            // Fence the patch with more backticks than any run it contains, so its
+            // content cannot break out of the code block.
+            const fence = '`'.repeat(Math.max(3, (patch.match(/`+/g) || []).reduce((max, run) => Math.max(max, run.length), 0) + 1));
+            const runUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+            const base = clean(request.base);
+            const headBranch = clean(request.head_branch);
+            const labels = ['flaky-test-fixer', 'release_note:skip', ...String(request.labels || '').split(',').map((label) => clean(label.trim())).filter(Boolean)];
+            const details = [
+              '<details>',
+              `<summary>⚠️ Automatic PR creation against <code>${base || '?'}</code> failed — the proposed fix is preserved here (see the <a href="${runUrl}">run</a> for why)</summary>`,
+              '',
+              `- **Title**: ${clean(request.title) || '(missing)'}`,
+              `- **Base**: \`${base || '?'}\` · **Head branch**: \`${headBranch || '?'}\` · **Labels**: ${labels.map((label) => `\`${label}\``).join(' ')}`,
+              `- The patch is also downloadable from the [run's](${runUrl}) \`agent\` artifact at \`aw-version-fix.patch\`.`,
+              '',
+              'To open the PR manually:',
+              '',
+              '```bash',
+              `git fetch --depth=1 origin ${base || '<base>'}`,
+              `git checkout -b ${headBranch || '<head-branch>'} FETCH_HEAD`,
+              '# save the patch below as /tmp/version-fix.patch, then:',
+              'git am --3way /tmp/version-fix.patch',
+              `git push origin HEAD:refs/heads/${headBranch || '<head-branch>'}`,
+              `gh pr create --draft --repo ${process.env.GITHUB_REPOSITORY} --base ${base || '<base>'} --head ${headBranch || '<head-branch>'} ${labels.map((label) => `--label '${label}'`).join(' ')}`,
+              '```',
+              '',
+              `**Proposed patch**${truncated ? ` (truncated — full version in the [run artifacts](${runUrl}))` : ''}:`,
+              '',
+              `${fence}diff`,
+              patch || '(no patch was produced)',
+              fence,
+              '',
+              '<details><summary>Proposed PR body</summary>',
+              '',
+              // Fenced so any mentions or links inside stay inert.
+              '````markdown',
+              String(request.body || '(missing)').slice(0, 10000),
+              '````',
+              '',
+              '</details>',
+              '',
+              '</details>',
+            ].join('\n');
+            const { owner, repo } = context.repo;
+            const { data: comment } = await github.rest.issues.getComment({ owner, repo, comment_id: commentId });
+            const body = comment.body || '';
+            let updated = body.replaceAll('%%FIX_PR_URL%%', '(not opened — see below)').replaceAll('%%FIX_PR_BADGE%%', details);
+            if (updated === body) updated = `${body}\n\n${details}`;
+            await github.rest.issues.updateComment({ owner, repo, comment_id: commentId, body: updated });
+            core.info(`Reported the proposed version-branch fix in comment ${commentId}.`);
+
   pre_activation:
     if: >
       (github.event_name == 'workflow_dispatch' && github.event.inputs.issue_number != '') ||
       (github.event_name == 'issues' &&
       github.event.action == 'labeled' && github.event.label.name == 'ai:fix-flaky' && !github.event.issue.pull_request)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
       GH_AW_RUNTIME_FEATURES: ${{ vars.GH_AW_RUNTIME_FEATURES }}
     outputs:
@@ -1880,7 +2223,7 @@ jobs:
       - agent
       - detection
     if: (!cancelled()) && needs.agent.result != 'skipped' && needs.detection.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       contents: write
       issues: write
@@ -1980,8 +2323,8 @@ jobs:
           GH_AW_ALLOWED_DOMAINS: "*.buildkite.com,*.githubusercontent.com,anthropic.com,api.anthropic.com,api.github.com,api.snapcraft.io,archive.ubuntu.com,azure.archive.ubuntu.com,buildkite.com,buildkiteartifacts.com,cdn.playwright.dev,ci-stats.kibana.dev,codeload.github.com,crl.geotrust.com,crl.globalsign.com,crl.identrust.com,crl.sectigo.com,crl.thawte.com,crl.usertrust.com,crl.verisign.com,crl3.digicert.com,crl4.digicert.com,crls.ssl.com,elastic.litellm-prod.ai,files.pythonhosted.org,ghcr.io,github-cloud.githubusercontent.com,github-cloud.s3.amazonaws.com,github.com,host.docker.internal,json-schema.org,json.schemastore.org,keyserver.ubuntu.com,lfs.github.com,objects.githubusercontent.com,ocsp.digicert.com,ocsp.geotrust.com,ocsp.globalsign.com,ocsp.identrust.com,ocsp.sectigo.com,ocsp.ssl.com,ocsp.thawte.com,ocsp.usertrust.com,ocsp.verisign.com,packagecloud.io,packages.cloud.google.com,packages.microsoft.com,playwright.download.prss.microsoft.com,ppa.launchpad.net,pypi.org,raw.githubusercontent.com,registry.npmjs.org,s.symcb.com,s.symcd.com,security.ubuntu.com,sentry.io,statsig.anthropic.com,ts-crl.ws.symantec.com,ts-ocsp.ws.symantec.com,www.googleapis.com"
           GITHUB_SERVER_URL: ${{ github.server_url }}
           GITHUB_API_URL: ${{ github.api_url }}
-          GH_AW_SAFE_OUTPUT_JOBS: "{\"link_fix_pr\":\"\",\"request_fix_review\":\"\"}"
-          GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG: "{\"add_comment\":{\"hide_older_comments\":true,\"max\":1,\"target\":\"${{ github.event.issue.number || github.event.inputs.issue_number }}\"},\"create_pull_request\":{\"allowed_base_branches\":[\"main\",\"9.*\",\"8.*\",\"7.*\"],\"base_branch\":\"main\",\"draft\":true,\"github-token\":\"${{ secrets.KIBANAMACHINE_TOKEN }}\",\"if_no_changes\":\"ignore\",\"labels\":[\"flaky-test-fixer\",\"release_note:skip\"],\"max\":1,\"max_patch_files\":100,\"max_patch_size\":4096,\"patch_format\":\"am\",\"protect_top_level_dot_folders\":true,\"protected_files\":[\"package.json\",\"bun.lockb\",\"bunfig.toml\",\"deno.json\",\"deno.jsonc\",\"deno.lock\",\"global.json\",\"NuGet.Config\",\"Directory.Packages.props\",\"mix.exs\",\"mix.lock\",\"go.mod\",\"go.sum\",\"stack.yaml\",\"stack.yaml.lock\",\"pom.xml\",\"build.gradle\",\"build.gradle.kts\",\"settings.gradle\",\"settings.gradle.kts\",\"gradle.properties\",\"package-lock.json\",\"yarn.lock\",\"pnpm-lock.yaml\",\"npm-shrinkwrap.json\",\"requirements.txt\",\"Pipfile\",\"Pipfile.lock\",\"pyproject.toml\",\"setup.py\",\"setup.cfg\",\"Gemfile\",\"Gemfile.lock\",\"uv.lock\",\"CODEOWNERS\",\"DESIGN.md\",\"README.md\",\"CONTRIBUTING.md\",\"CHANGELOG.md\",\"SECURITY.md\",\"CODE_OF_CONDUCT.md\",\"CLAUDE.md\",\"AGENTS.md\"],\"protected_files_policy\":\"fallback-to-issue\",\"reviewers\":[\"${{ github.actor }}\"]},\"create_report_incomplete_issue\":{},\"mentions\":{\"allowed\":[\"${{ github.actor }}\"],\"allowedCollaborators\":true},\"missing_data\":{},\"missing_tool\":{},\"noop\":{\"max\":1,\"report-as-issue\":\"true\"},\"remove_labels\":{\"allowed\":[\"ai:fix-flaky\"],\"max\":1,\"target\":\"${{ github.event.issue.number || github.event.inputs.issue_number }}\"},\"report_incomplete\":{}}"
+          GH_AW_SAFE_OUTPUT_JOBS: "{\"link_fix_pr\":\"\",\"open_version_branch_pr\":\"\",\"request_fix_review\":\"\"}"
+          GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG: "{\"add_comment\":{\"hide_older_comments\":true,\"max\":1,\"target\":\"${{ github.event.issue.number || github.event.inputs.issue_number }}\"},\"create_pull_request\":{\"allowed_base_branches\":[\"main\"],\"base_branch\":\"main\",\"draft\":true,\"github-token\":\"${{ secrets.KIBANAMACHINE_TOKEN }}\",\"if_no_changes\":\"ignore\",\"labels\":[\"flaky-test-fixer\",\"release_note:skip\"],\"max\":1,\"max_patch_files\":100,\"max_patch_size\":4096,\"patch_format\":\"am\",\"protect_top_level_dot_folders\":true,\"protected_files\":[\"package.json\",\"bun.lockb\",\"bunfig.toml\",\"deno.json\",\"deno.jsonc\",\"deno.lock\",\"global.json\",\"NuGet.Config\",\"Directory.Packages.props\",\"mix.exs\",\"mix.lock\",\"go.mod\",\"go.sum\",\"stack.yaml\",\"stack.yaml.lock\",\"pom.xml\",\"build.gradle\",\"build.gradle.kts\",\"settings.gradle\",\"settings.gradle.kts\",\"gradle.properties\",\"package-lock.json\",\"yarn.lock\",\"pnpm-lock.yaml\",\"npm-shrinkwrap.json\",\"requirements.txt\",\"Pipfile\",\"Pipfile.lock\",\"pyproject.toml\",\"setup.py\",\"setup.cfg\",\"Gemfile\",\"Gemfile.lock\",\"uv.lock\",\"CODEOWNERS\",\"DESIGN.md\",\"README.md\",\"CONTRIBUTING.md\",\"CHANGELOG.md\",\"SECURITY.md\",\"CODE_OF_CONDUCT.md\",\"CLAUDE.md\",\"AGENTS.md\"],\"protected_files_policy\":\"fallback-to-issue\",\"reviewers\":[\"${{ github.actor }}\"]},\"create_report_incomplete_issue\":{},\"mentions\":{\"allowed\":[\"${{ github.actor }}\"],\"allowedCollaborators\":true},\"missing_data\":{},\"missing_tool\":{},\"noop\":{\"max\":1,\"report-as-issue\":\"true\"},\"remove_labels\":{\"allowed\":[\"ai:fix-flaky\"],\"max\":1,\"target\":\"${{ github.event.issue.number || github.event.inputs.issue_number }}\"},\"report_incomplete\":{}}"
           GH_AW_CI_TRIGGER_TOKEN: ${{ secrets.GH_AW_CI_TRIGGER_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.KIBANAMACHINE_TOKEN }}
         with:
