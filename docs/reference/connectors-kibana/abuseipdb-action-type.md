@@ -1,5 +1,7 @@
 ---
 navigation_title: "AbuseIPDB"
+type: reference
+description: "Use the AbuseIPDB connector to check IP address reputation, look up IP details, and report abusive IP addresses using the AbuseIPDB API."
 applies_to:
   stack: preview 9.3
   serverless: preview
@@ -23,6 +25,8 @@ API Key
 ## Test connectors [abuseipdb-action-configuration]
 
 You can test connectors as you're creating or editing the connector in {{kib}}.
+
+## Connector actions [abuseipdb-connector-actions]
 
 The AbuseIPDB connector has the following actions:
 
@@ -50,7 +54,7 @@ Bulk Check
 
 Use the [Action configuration settings](/reference/configuration-reference/alerting-settings.md#action-settings) to customize connector networking configurations, such as proxies, certificates, or TLS settings. You can set configurations that apply to all your connectors or use `xpack.actions.customHostSettings` to set per-host configurations.
 
-## Get API credentials [abuseipdb-api-credentials]
+## Get credentials [abuseipdb-credentials]
 
 To use the AbuseIPDB connector, you need an API key:
 

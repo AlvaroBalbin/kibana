@@ -1,18 +1,19 @@
 ---
 navigation_title: <CONNECTOR_NAME>
+type: reference
+description: One factual sentence of about 150 characters describing what the connector does.
 applies_to:
   stack: ga
   serverless: ga
-description: Instructions and best practices for creating <CONNECTOR_NAME> in Elastic.
 ---
 
 % For each new connector, also update the connector TOC at https://github.com/elastic/kibana/blob/main/docs/reference/toc.yml and the list of available connectors at https://github.com/elastic/kibana/blob/main/docs/reference/connectors-kibana.md
 
-# {{CONNECTOR_NAME}} connector and action [connector-name-action-type]
+# {{CONNECTOR_NAME}} connector [connector-name-action-type]
 
-Include a short description of the connector type.
+One or two sentences: what the connector connects to, what it does, and how it authenticates.
 
-## Create connectors in {{kib}} [define-connector-name-type]
+## Create connectors in {{kib}} [define-connector-name-ui]
 
 You can create connectors in **{{stack-manage-app}} > {{connectors-ui}}** or as needed when you're creating a rule.
 
@@ -39,15 +40,28 @@ Property2
 
 ## Test connectors [connector-name-action-configuration]
 
-The {{CONNECTOR-NAME}} actions have the following configuration properties.
+You can test connectors as you're creating or editing the connector in {{kib}}.
 
-Property1
-:   A short description of this property.
+% Describe only how to test the connector here, including what the test verifies. List the actions in the next section.
 
-Property2
-:   A short description of this property with format hints. This can be specified in `this specific format`.
+## Connector actions [connector-name-connector-actions]
 
+The {{CONNECTOR-NAME}} connector has the following actions:
 
-% Provide additional configuration details here. 
+% List the actions the connector exposes. Mark the actions that write to or modify the third-party service.
 
-% ## Connector networking configuration [connector-name-connector-networking-configuration]
+Action1
+:   A short description of what this action does and what it returns.
+
+Action2
+:   A short description of what this action does, including its parameters. A parameter can be specified in `this specific format`.
+
+## Connector networking configuration [connector-name-connector-networking-configuration]
+
+Use the [Action configuration settings](/reference/configuration-reference/alerting-settings.md#action-settings) to customize connector networking configurations, such as proxies, certificates, or TLS settings. You can set configurations that apply to all your connectors or use `xpack.actions.customHostSettings` to set per-host configurations.
+
+% Include this section only for connectors that call an external service.
+
+## Get credentials [connector-name-credentials]
+
+% State the authentication mechanism (for example, API key, OAuth 2.0, Basic, or PKI) in the prose, and explain how to obtain the credentials from the third-party service.

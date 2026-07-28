@@ -1,5 +1,7 @@
 ---
 navigation_title: "<%= connector.displayName %>"
+type: reference
+description: "Use the <%= connector.displayName %> connector to ..."
 applies_to:
   stack: preview
   serverless: preview
@@ -17,7 +19,7 @@ You can create connectors in **{{stack-manage-app}} > {{connectors-ui}}**. For e
 
 <%= connector.displayName %> connectors have the following configuration properties:
 
-<!-- TODO: Add action descriptions here -->
+<!-- TODO: Add configuration property descriptions here -->
 <!-- Example:
 API Key
 :   The <%= connector.displayName %> API key for authentication.
@@ -28,9 +30,14 @@ API Key
 
 You can test connectors as you're creating or editing the connector in {{kib}}.
 
+<!-- TODO: Describe what the connector test verifies. Only testing content belongs in this section. -->
+
+
+## Connector actions [<%= connector.kebabName %>-connector-actions]
+
 The <%= connector.displayName %> connector has the following actions:
 
-<!-- TODO: Add action descriptions here -->
+<!-- TODO: Add action descriptions here. Mark the actions that write to or modify <%= connector.displayName %>. -->
 <!-- Example:
 Action Name
 :   Description of what this action does.
@@ -38,8 +45,13 @@ Action Name
 -->
 
 
-## Get API credentials [<%= connector.kebabName %>-api-credentials]
+## Connector networking configuration [<%= connector.kebabName %>-connector-networking-configuration]
+
+Use the [Action configuration settings](/reference/configuration-reference/alerting-settings.md#action-settings) to customize connector networking configurations, such as proxies, certificates, or TLS settings. You can set configurations that apply to all your connectors or use `xpack.actions.customHostSettings` to set per-host configurations.
+
+
+## Get credentials [<%= connector.kebabName %>-credentials]
 
 To use the <%= connector.displayName %> connector, you need to:
 
-<!-- TODO: Add instructions here -->
+<!-- TODO: Add instructions here. State the authentication mechanism (for example, API key, OAuth 2.0, Basic, or PKI) in the prose. -->

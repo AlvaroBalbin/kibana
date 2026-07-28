@@ -27,6 +27,8 @@ API key
 
 ## Test connectors [sublime-security-action-configuration]
 
+## Connector actions [sublime-security-connector-actions]
+
 The Sublime Security connector has the following actions:
 
 Search message groups

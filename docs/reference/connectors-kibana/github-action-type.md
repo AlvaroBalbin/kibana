@@ -24,12 +24,14 @@ MCP Server URL
 
 Authentication
 :   Choose one of the following authentication methods:
-    - **Bearer Token**: A GitHub personal access token. Refer to [Get API credentials](#github-api-credentials) for instructions.
-    - **OAuth Authorization Code**: Connects via GitHub's OAuth flow. Requires a GitHub OAuth App with an authorization URL (`https://github.com/login/oauth/authorize`) and token URL (`https://github.com/login/oauth/access_token`). The default scope is `repo`. Refer to [OAuth credentials](#github-oauth-credentials) for setup instructions.
+    - **Bearer Token**: A GitHub personal access token. Refer to [Get credentials](#github-credentials) for instructions.
+    - **OAuth Authorization Code**: Connects via GitHub's OAuth flow. Requires a GitHub OAuth App with an authorization URL (`https://github.com/login/oauth/authorize`) and token URL (`https://github.com/login/oauth/access_token`). The default scope is `repo`. Refer to [Get credentials](#github-credentials) for setup instructions.
 
 ## Test connectors [github-action-configuration]
 
 You can test connectors when you create or edit the connector in {{kib}}.
+
+## Connector actions [github-connector-actions]
 
 The GitHub connector exposes the following actions:
 
@@ -97,7 +99,11 @@ The GitHub connector exposes the following actions:
 
 Use the [Action configuration settings](/reference/configuration-reference/alerting-settings.md#action-settings) to customize connector networking, such as proxies, certificates, or TLS settings. You can set configurations that apply to all your connectors or use `xpack.actions.customHostSettings` to set per-host configurations.
 
-## Get API credentials [github-api-credentials]
+## Get credentials [github-credentials]
+
+The GitHub connector supports two authentication methods: a personal access token sent as a bearer token, and OAuth 2.0 authorization code.
+
+### Personal access token
 
 To use the GitHub connector with a personal access token:
 
@@ -116,7 +122,7 @@ To use the GitHub connector with a personal access token:
 Classic personal access tokens also work. When using a classic token, select the `repo` scope for full repository access, or `public_repo` for public repositories only.
 ::::
 
-## Get OAuth credentials [github-oauth-credentials]
+### OAuth 2.0 authorization code
 
 To use the GitHub connector with OAuth:
 

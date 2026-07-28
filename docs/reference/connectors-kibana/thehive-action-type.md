@@ -1,5 +1,7 @@
 ---
 navigation_title: "{{hive}}"
+type: reference
+description: "Use TheHive connector to create cases and alerts in TheHive using its v1 REST API."
 mapped_pages:
   - https://www.elastic.co/guide/en/kibana/current/thehive-action-type.html
 applies_to:
@@ -9,7 +11,7 @@ applies_to:
     security: ga
 ---
 
-# {{hive}} connector and action [thehive-action-type]
+# {{hive}} connector [thehive-action-type]
 
 {{hive}} connector uses the [{{hive}} (v1) REST API](https://docs.strangebee.com/thehive/api-docs/) to create cases and alerts. [8.16.0]
 
