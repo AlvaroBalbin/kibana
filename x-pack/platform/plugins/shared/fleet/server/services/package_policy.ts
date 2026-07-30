@@ -144,6 +144,8 @@ import {
   isAgentlessIntegration,
 } from '../../common/services/agentless_policy_helper';
 
+import { extractRawCredentialVars } from '../../common/services/cloud_connectors';
+
 import {
   AWS_CREDENTIALS_EXTERNAL_ID_VAR_NAME,
   AWS_ROLE_ARN_VAR_NAME,
@@ -376,12 +378,13 @@ export function _normalizePackagePolicyKuery(savedObjectType: string, kuery: str
 const extractPackagePolicyVars = (
   cloudProvider: CloudProvider,
   packagePolicy: NewPackagePolicy,
+  packageInfo: PackageInfo,
   logger: Logger
 ): CloudConnectorVars | undefined => {
   logger.get('extract package policy vars');
 
   if (packagePolicy.supports_cloud_connector && cloudProvider === 'aws') {
-    const vars = packagePolicy.inputs.find((input) => input.enabled)?.streams[0]?.vars;
+    const vars = extractRawCredentialVars(packagePolicy, packageInfo);
 
     if (!vars) {
       logger.error('Package policy must contain vars');
@@ -407,7 +410,7 @@ const extractPackagePolicyVars = (
   }
 
   if (packagePolicy.supports_cloud_connector && cloudProvider === 'azure') {
-    const vars = packagePolicy.inputs.find((input) => input.enabled)?.streams[0]?.vars;
+    const vars = extractRawCredentialVars(packagePolicy, packageInfo);
 
     if (!vars) {
       logger.error('Package policy must contain vars');
@@ -443,7 +446,7 @@ const extractPackagePolicyVars = (
   }
 
   if (packagePolicy.supports_cloud_connector && cloudProvider === 'gcp') {
-    const vars = packagePolicy.inputs.find((input) => input.enabled)?.streams[0]?.vars;
+    const vars = extractRawCredentialVars(packagePolicy, packageInfo);
 
     if (!vars) {
       logger.error('Package policy must contain vars');
@@ -3386,6 +3389,7 @@ class PackagePolicyClientImpl implements PackagePolicyClient {
     const cloudConnectorVars = extractPackagePolicyVars(
       cloudProvider,
       enrichedPackagePolicy,
+      packageInfo,
       logger
     );
 
