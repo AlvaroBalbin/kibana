@@ -577,6 +577,7 @@ export interface DocLinks {
     settingsFleetServerProxySettings: string;
     troubleshooting: string;
     elasticAgent: string;
+    elasticAgentDownloads: string;
     datastreams: string;
     datastreamsILM: string;
     datastreamsNamingScheme: string;

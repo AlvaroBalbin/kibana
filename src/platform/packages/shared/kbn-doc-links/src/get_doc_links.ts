@@ -938,6 +938,7 @@ export const getDocLinks = ({ kibanaBranch, buildFlavor }: GetDocLinkOptions): D
       settingsFleetServerProxySettings: `${ELASTIC_DOCS}reference/kibana/configuration-reference/fleet-settings#fleet-data-visualizer-settings`,
       troubleshooting: `${ELASTIC_DOCS}troubleshoot/ingest/fleet/common-problems`,
       elasticAgent: `${ELASTIC_DOCS}reference/fleet/install-elastic-agents`,
+      elasticAgentDownloads: `https://www.elastic.co/downloads/past-releases`,
       beatsAgentComparison: `${ELASTIC_DOCS}manage-data/ingest/tools`,
       datastreams: `${ELASTIC_DOCS}reference/fleet/data-streams`,
       datastreamsILM: `${ELASTIC_DOCS}reference/fleet/data-streams#data-streams-ilm`,
