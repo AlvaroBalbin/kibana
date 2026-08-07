@@ -7,6 +7,7 @@
 
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { decode as decodeRison } from '@kbn/rison';
 import type { IHttpFetchError, ResponseErrorBody } from '@kbn/core/public';
 import { License } from '@kbn/licensing-plugin/common/license';
 import { BehaviorSubject } from 'rxjs';
@@ -326,6 +327,45 @@ describe('ServiceMapEmbeddable', () => {
       expect(fullMapLink).toHaveAttribute(
         'href',
         expect.stringContaining('kuery=transaction.type')
+      );
+    });
+
+    it('seeds dashboard parent filters into the View in Service map href', () => {
+      renderEmbeddable({
+        parentFilters: [
+          {
+            meta: { key: 'transaction.result', negate: false, disabled: false },
+            query: { match_phrase: { 'transaction.result': 'error' } },
+          },
+        ],
+      });
+
+      const fullMapLink = screen.getByRole('link', { name: /View in Service map/i });
+      const href = fullMapLink.getAttribute('href')!;
+      const appStateMatch = href.match(/[?&]_a=([^&#]+)/);
+      expect(appStateMatch).not.toBeNull();
+      const appState = decodeRison(decodeURIComponent(appStateMatch![1])) as {
+        filters?: unknown;
+      };
+      expect(appState.filters).toEqual([
+        {
+          meta: { key: 'transaction.result', negate: false, disabled: false },
+          query: { match_phrase: { 'transaction.result': 'error' } },
+        },
+      ]);
+    });
+
+    it('combines panel kuery with the dashboard parent query in the View in Service map href', () => {
+      renderEmbeddable({
+        kuery: 'transaction.type: "request"',
+        parentQuery: { query: 'service.name: "opbeans-java"', language: 'kuery' },
+      });
+
+      const fullMapLink = screen.getByRole('link', { name: /View in Service map/i });
+      const href = fullMapLink.getAttribute('href')!;
+      const query = new URLSearchParams(href.split('?')[1]);
+      expect(query.get('kuery')).toBe(
+        '(transaction.type: "request") and (service.name: "opbeans-java")'
       );
     });
 

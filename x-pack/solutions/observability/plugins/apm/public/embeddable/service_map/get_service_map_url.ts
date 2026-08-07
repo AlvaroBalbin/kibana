@@ -7,6 +7,7 @@
 
 import { encode as encodeRison } from '@kbn/rison';
 import type { CoreStart } from '@kbn/core/public';
+import type { Filter } from '@kbn/es-query';
 import { SERVICE_NAME } from '@kbn/apm-types';
 import type { Environment } from '../../../common/environment_rt';
 import type { ServiceMapViewFilters } from '../../components/app/service_map/apply_service_map_visibility';
@@ -38,6 +39,11 @@ export interface ServiceMapUrlParams {
    * field names (e.g. TRANSACTION_NAME, TRANSACTION_TYPE constants).
    */
   filterPills?: Array<{ field: string; value: string }>;
+  /**
+   * Full filter objects (e.g. Dashboard filter bar / panel filters) to seed as
+   * filter-bar pills (`_a.filters`) on the global map, alongside `filterPills`.
+   */
+  dashboardFilters?: Filter[];
   /**
    * Options-panel filters (Dependencies, alert/SLO/anomaly status).
    * Seeded into `_a.viewFilters` for restore on the global map.
@@ -104,6 +110,7 @@ export function buildServiceMapSearchParams(params: ServiceMapUrlParams): URLSea
     serviceGroupId,
     controlSelections: controlSelectionsParam,
     filterPills,
+    dashboardFilters,
     viewFilters,
     mapOrientation,
   } = params;
@@ -138,20 +145,21 @@ export function buildServiceMapSearchParams(params: ServiceMapUrlParams): URLSea
   }
 
   const appState: {
-    filters?: Array<{
-      meta: { key: string; negate: boolean; disabled: boolean };
-      query: { match_phrase: Record<string, string> };
-    }>;
+    filters?: Filter[];
     controlSelections?: ServiceMapControlSelections;
     viewFilters?: ServiceMapUrlViewFilters;
     mapOrientation?: ServiceMapOrientation;
   } = {};
 
-  if (filterBarPills.length > 0) {
-    appState.filters = filterBarPills.map((pill) => ({
+  const filters: Filter[] = [
+    ...(dashboardFilters ?? []),
+    ...filterBarPills.map((pill) => ({
       meta: { key: pill.field, negate: false, disabled: false },
       query: { match_phrase: { [pill.field]: pill.value } },
-    }));
+    })),
+  ];
+  if (filters.length > 0) {
+    appState.filters = filters;
   }
 
   const nonEmptyControlSelections = Object.fromEntries(

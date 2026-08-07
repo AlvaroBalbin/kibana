@@ -270,29 +270,48 @@ export function ServiceMapEmbeddable({
 
   const { dataView } = useAdHocApmDataView();
   const kibanaQuerySettings = useKibanaQuerySettings();
-  const esQuery = useMemo(() => {
-    // Environment is applied via the dedicated server param, so skip it here.
-    const filtersWithoutEnv = (parentFilters ?? []).filter(
-      (f) => f.meta?.key !== 'service.environment'
-    );
-    const hasParentFilters = filtersWithoutEnv.length > 0;
-    const parentQueryText =
+
+  // Environment is applied via the dedicated server param, so skip it here.
+  const parentFiltersWithoutEnv = useMemo(
+    () => (parentFilters ?? []).filter((f) => f.meta?.key !== 'service.environment'),
+    [parentFilters]
+  );
+
+  const { parentQueryText, parentQueryLanguage } = useMemo(() => {
+    const text =
       parentQuery && 'query' in parentQuery && typeof parentQuery.query === 'string'
         ? parentQuery.query.trim()
         : '';
+    const language =
+      parentQuery && 'language' in parentQuery && typeof parentQuery.language === 'string'
+        ? parentQuery.language
+        : 'kuery';
+    return { parentQueryText: text, parentQueryLanguage: language };
+  }, [parentQuery]);
+
+  const esQuery = useMemo(() => {
+    const hasParentFilters = parentFiltersWithoutEnv.length > 0;
     const hasParentQuery = parentQueryText.length > 0;
     if (!dataView || (!hasParentFilters && !hasParentQuery)) {
       return undefined;
     }
-    const parentQueryLanguage =
-      parentQuery && 'language' in parentQuery && typeof parentQuery.language === 'string'
-        ? parentQuery.language
-        : 'kuery';
     const queries: Query[] = hasParentQuery
       ? [{ query: parentQueryText, language: parentQueryLanguage }]
       : [];
-    return buildEsQuery(dataView, queries, filtersWithoutEnv, kibanaQuerySettings);
-  }, [dataView, parentFilters, parentQuery, kibanaQuerySettings]);
+    return buildEsQuery(dataView, queries, parentFiltersWithoutEnv, kibanaQuerySettings);
+  }, [dataView, parentFiltersWithoutEnv, parentQueryText, parentQueryLanguage, kibanaQuerySettings]);
+
+  // Combine the panel's own kuery with the Dashboard's shared query bar text
+  // (only when it's KQL) so both survive the trip to the global map's `kuery` param.
+  const fullMapKuery = useMemo(() => {
+    const parts = [kuery, parentQueryLanguage === 'kuery' ? parentQueryText : ''].filter(
+      (part) => part.trim().length > 0
+    );
+    if (parts.length <= 1) {
+      return parts[0] ?? '';
+    }
+    return parts.map((part) => `(${part})`).join(' and ');
+  }, [kuery, parentQueryText, parentQueryLanguage]);
 
   const { data, status, error } = useServiceMap({
     environment,
@@ -431,10 +450,11 @@ export function ServiceMapEmbeddable({
     rangeFrom,
     rangeTo,
     environment,
-    kuery,
+    kuery: fullMapKuery,
     serviceName,
     serviceGroupId,
     filterPills,
+    dashboardFilters: parentFiltersWithoutEnv,
     viewFilters,
     mapOrientation,
     controlSelections:

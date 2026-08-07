@@ -114,6 +114,33 @@ describe('getServiceMapUrl', () => {
     });
   });
 
+  it('seeds dashboardFilters into _a.filters alongside filterPills', () => {
+    getServiceMapUrl(core, {
+      rangeFrom: 'now-1h',
+      rangeTo: 'now',
+      dashboardFilters: [
+        {
+          meta: { key: 'transaction.result', negate: true, disabled: false },
+          query: { match_phrase: { 'transaction.result': 'error' } },
+        },
+      ],
+      filterPills: [{ field: 'transaction.type', value: 'request' }],
+    });
+
+    expect(getAppStateFromPath(getLastPath(core))).toEqual({
+      filters: [
+        {
+          meta: { key: 'transaction.result', negate: true, disabled: false },
+          query: { match_phrase: { 'transaction.result': 'error' } },
+        },
+        {
+          meta: { key: 'transaction.type', negate: false, disabled: false },
+          query: { match_phrase: { 'transaction.type': 'request' } },
+        },
+      ],
+    });
+  });
+
   it('includes serviceGroupId in query when provided', () => {
     getServiceMapUrl(core, {
       rangeFrom: 'now-15m',
