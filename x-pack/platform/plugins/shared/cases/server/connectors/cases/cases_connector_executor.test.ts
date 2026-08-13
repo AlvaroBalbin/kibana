@@ -3312,15 +3312,37 @@ fields: []
   });
 
   describe('Circuit breakers', () => {
+    const notFoundRecord = (id: string) => ({
+      id,
+      type: CASE_RULES_SAVED_OBJECT,
+      message: 'Not found',
+      statusCode: 404,
+      error: 'Not found',
+    });
+
     describe('user defined', () => {
+      beforeEach(() => {
+        mockBulkGetRecords
+          .mockResolvedValueOnce([
+            notFoundRecord('so-oracle-record-0'),
+            notFoundRecord('so-oracle-record-1'),
+            notFoundRecord('so-oracle-record-2'),
+          ])
+          .mockResolvedValueOnce([notFoundRecord('so-oracle-record-3')]);
+
+        mockBulkCreateRecords.mockResolvedValue([
+          { ...createdOracleRecord, id: 'so-oracle-record-3', grouping: {} },
+        ]);
+      });
+
       it('generates the oracle keys correctly when the total cases to be open is more than maximumCasesToOpen', async () => {
         await connectorExecutor.execute({
           ...params,
           maximumCasesToOpen: 1,
         });
 
-        expect(mockGetRecordId).toHaveBeenCalledTimes(1);
-        expect(mockGetRecordId).nthCalledWith(1, {
+        expect(mockGetRecordId).toHaveBeenCalledTimes(4);
+        expect(mockGetRecordId).nthCalledWith(4, {
           ruleId: rule.id,
           grouping: {},
           owner,
@@ -3344,7 +3366,7 @@ fields: []
         });
       });
 
-      it('attach all alerts to the same case when the grouping generates more than maximumCasesToOpen', async () => {
+      it('attach all alerts to the same case when none of the groupings has an existing case', async () => {
         await connectorExecutor.execute({
           ...params,
           maximumCasesToOpen: 1,
@@ -3365,6 +3387,56 @@ fields: []
         });
       });
 
+      it('keeps attaching alerts to the groupings that already have an oracle record instead of the catch-all case', async () => {
+        mockBulkGetRecords.mockReset();
+        mockBulkGetRecords
+          .mockResolvedValueOnce([oracleRecords[0], oracleRecords[1], oracleRecords[2]])
+          .mockResolvedValueOnce([oracleRecords[0], oracleRecords[1], notFoundRecord('so-oracle-record-3')]);
+
+        await connectorExecutor.execute({
+          ...params,
+          maximumCasesToOpen: 1,
+        });
+
+        expect(casesClientMock.attachments.bulkCreate).toHaveBeenCalledTimes(3);
+        expect(casesClientMock.attachments.bulkCreate).nthCalledWith(1, {
+          caseId: 'mock-id-1',
+          attachments: [
+            {
+              type: 'alert',
+              alertId: ['alert-id-0', 'alert-id-2'],
+              index: ['alert-index-0', 'alert-index-2'],
+              rule: { id: 'rule-test-id', name: 'Test rule' },
+              owner: 'securitySolution',
+            },
+          ],
+        });
+        expect(casesClientMock.attachments.bulkCreate).nthCalledWith(2, {
+          caseId: 'mock-id-2',
+          attachments: [
+            {
+              type: 'alert',
+              alertId: ['alert-id-1'],
+              index: ['alert-index-1'],
+              rule: { id: 'rule-test-id', name: 'Test rule' },
+              owner: 'securitySolution',
+            },
+          ],
+        });
+        expect(casesClientMock.attachments.bulkCreate).nthCalledWith(3, {
+          caseId: 'mock-id-3',
+          attachments: [
+            {
+              type: 'alert',
+              alertId: ['alert-id-3'],
+              index: ['alert-index-3'],
+              rule: { id: 'rule-test-id', name: 'Test rule' },
+              owner: 'securitySolution',
+            },
+          ],
+        });
+      });
+
       it('logs correctly', async () => {
         await connectorExecutor.execute({
           ...params,
@@ -3372,7 +3444,7 @@ fields: []
         });
 
         expect(mockLogger.warn).toHaveBeenCalledWith(
-          `[CasesConnector][CasesConnectorExecutor][applyCircuitBreakers] Circuit breaker: Grouping definition would create more (3) than the maximum number of allowed cases (1). Falling back to one case.`,
+          `[CasesConnector][CasesConnectorExecutor][applyCircuitBreakers] Circuit breaker: Grouping definition would create more (3) than the maximum number of allowed cases (1). Falling back to one case for the groupings without an existing case.`,
           { labels: {}, tags: ['cases-connector', 'rule:rule-test-id'] }
         );
       });
@@ -3387,6 +3459,24 @@ fields: []
         })
       );
 
+      beforeEach(() => {
+        mockBulkGetRecords
+          .mockResolvedValueOnce(
+            allAlerts.map((_, index) => notFoundRecord(`so-oracle-record-${index}`))
+          )
+          .mockResolvedValueOnce([
+            notFoundRecord(`so-oracle-record-${allAlerts.length}`),
+          ]);
+
+        mockBulkCreateRecords.mockResolvedValue([
+          {
+            ...createdOracleRecord,
+            id: `so-oracle-record-${allAlerts.length}`,
+            grouping: {},
+          },
+        ]);
+      });
+
       it('generates the oracle keys correctly when the total cases to be open is more than the effective maximum', async () => {
         await connectorExecutor.execute({
           ...params,
@@ -3395,8 +3485,8 @@ fields: []
           maximumCasesToOpen: MAX_OPEN_CASES_DEFAULT_MAXIMUM,
         });
 
-        expect(mockGetRecordId).toHaveBeenCalledTimes(1);
-        expect(mockGetRecordId).nthCalledWith(1, {
+        expect(mockGetRecordId).toHaveBeenCalledTimes(allAlerts.length + 1);
+        expect(mockGetRecordId).nthCalledWith(allAlerts.length + 1, {
           ruleId: rule.id,
           grouping: {},
           owner,
@@ -3422,7 +3512,7 @@ fields: []
         });
       });
 
-      it('attach all alerts to the same case when the grouping generates more than the effective maximum', async () => {
+      it('attach all alerts to the same case when none of the groupings has an existing case', async () => {
         await connectorExecutor.execute({
           ...params,
           alerts: allAlerts,
@@ -3457,7 +3547,7 @@ fields: []
         });
 
         expect(mockLogger.warn).toHaveBeenCalledWith(
-          `[CasesConnector][CasesConnectorExecutor][applyCircuitBreakers] Circuit breaker: Grouping definition would create more (21) than the maximum number of allowed cases (20). Falling back to one case.`,
+          `[CasesConnector][CasesConnectorExecutor][applyCircuitBreakers] Circuit breaker: Grouping definition would create more (21) than the maximum number of allowed cases (20). Falling back to one case for the groupings without an existing case.`,
           { labels: {}, tags: ['cases-connector', 'rule:rule-test-id'] }
         );
       });

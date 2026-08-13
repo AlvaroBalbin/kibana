@@ -108,9 +108,8 @@ export class CasesConnectorExecutor {
     const { alerts, groupedAlerts: casesGroupedAlerts, groupingBy } = params;
 
     const groupedAlerts = casesGroupedAlerts ?? this.groupAlerts({ params, alerts, groupingBy });
-    const groupedAlertsWithCircuitBreakers = this.applyCircuitBreakers(params, groupedAlerts);
 
-    if (groupedAlertsWithCircuitBreakers.length === 0) {
+    if (groupedAlerts.length === 0) {
       this.logger.debug(
         `[CasesConnector][CasesConnectorExecutor] Grouping did not produce any alerts. Skipping execution.`,
         this.getLogMetadata(params)
@@ -123,9 +122,16 @@ export class CasesConnectorExecutor {
      * Based on the rule ID, the grouping, the owner, the space ID,
      * the oracle record ID is generated
      */
-    const groupedAlertsWithOracleKey = this.generateOracleKeys(
+    const groupedAlertsWithOracleKey = this.generateOracleKeys(params, groupedAlerts);
+
+    /**
+     * Groupings that already have an oracle record (and therefore an open case) are kept
+     * as is so that their alerts keep being attached to their existing case. Only the
+     * groupings without an existing record are folded into a single catch-all grouping.
+     */
+    const groupedAlertsWithCircuitBreakers = await this.applyCircuitBreakers(
       params,
-      groupedAlertsWithCircuitBreakers
+      groupedAlertsWithOracleKey
     );
 
     /**
@@ -134,7 +140,10 @@ export class CasesConnectorExecutor {
      * A record does not exist if it is the first time the connector run for a specific grouping.
      * The returned map will contain all records old and new.
      */
-    const oracleRecordsMap = await this.upsertOracleRecords(params, groupedAlertsWithOracleKey);
+    const oracleRecordsMap = await this.upsertOracleRecords(
+      params,
+      groupedAlertsWithCircuitBreakers
+    );
 
     /**
      * If the time window has passed for a case we need to create a new case.
@@ -299,21 +308,57 @@ export class CasesConnectorExecutor {
     return noGroupedGrouping;
   };
 
-  private applyCircuitBreakers(
+  private async applyCircuitBreakers(
     params: CasesConnectorRunParams,
-    groupedAlerts: CasesGroupedAlerts[]
-  ): CasesGroupedAlerts[] {
-    const groupSize = groupedAlerts.length;
-    if (groupSize > params.maximumCasesToOpen) {
-      this.logger.warn(
-        `[CasesConnector][CasesConnectorExecutor][applyCircuitBreakers] Circuit breaker: Grouping definition would create more (${groupSize}) than the maximum number of allowed cases (${params.maximumCasesToOpen}). Falling back to one case.`,
-        this.getLogMetadata(params)
-      );
+    groupedAlerts: Map<string, GroupedAlertsWithOracleKey>
+  ): Promise<Map<string, GroupedAlertsWithOracleKey>> {
+    const groupSize = groupedAlerts.size;
 
-      return this.removeGrouping(groupedAlerts);
+    if (groupSize <= params.maximumCasesToOpen) {
+      return groupedAlerts;
     }
 
-    return groupedAlerts;
+    /**
+     * Groupings that already have an oracle record have an open case for the current
+     * time window. Those need to be excluded from the circuit breaker so their alerts
+     * keep being attached to their existing case instead of the catch-all case.
+     */
+    const entries = Array.from(groupedAlerts.values());
+    const ids = entries.map(({ oracleKey }) => oracleKey);
+    const bulkGetRes = await this.casesOracleService.bulkGetRecords(ids);
+    const [existingRecords] = partitionRecordsByError(bulkGetRes);
+    const existingIds = new Set(existingRecords.map(({ id }) => id));
+
+    const [entriesWithExistingCases, entriesWithoutExistingCases] = partition(
+      entries,
+      ({ oracleKey }) => existingIds.has(oracleKey)
+    );
+
+    if (entriesWithoutExistingCases.length === 0) {
+      return groupedAlerts;
+    }
+
+    this.logger.warn(
+      `[CasesConnector][CasesConnectorExecutor][applyCircuitBreakers] Circuit breaker: Grouping definition would create more (${groupSize}) than the maximum number of allowed cases (${params.maximumCasesToOpen}). Falling back to one case for the groupings without an existing case.`,
+      this.getLogMetadata(params)
+    );
+
+    const collapsedGroupedAlertsWithOracleKey = this.generateOracleKeys(
+      params,
+      this.removeGrouping(entriesWithoutExistingCases)
+    );
+
+    const groupedAlertsWithCircuitBreakers = new Map<string, GroupedAlertsWithOracleKey>();
+
+    for (const entry of entriesWithExistingCases) {
+      groupedAlertsWithCircuitBreakers.set(entry.oracleKey, entry);
+    }
+
+    for (const [oracleKey, entry] of collapsedGroupedAlertsWithOracleKey) {
+      groupedAlertsWithCircuitBreakers.set(oracleKey, entry);
+    }
+
+    return groupedAlertsWithCircuitBreakers;
   }
 
   private removeGrouping(groupedAlerts: CasesGroupedAlerts[]): CasesGroupedAlerts[] {
