@@ -22,11 +22,19 @@ const hasDefault = (schema: OpenAPIV3.SchemaObject): boolean => {
   return schema.default !== undefined;
 };
 
+// config-schema gives an object with no required properties an implicit `{}` default
+// at runtime, so it can be omitted too. Inner objects are walked (and their own
+// `required` populated) before their parent, so that's visible here as no `required`.
+const isOptionalObjectType = (schema: OpenAPIV3.SchemaObject): boolean => {
+  return schema.type === 'object' && Boolean(schema.properties) && !schema.required;
+};
+
 const isOptionalAtRuntime = (schema: OpenAPIV3.SchemaObject): boolean => {
   return (
     META_FIELD_X_OAS_OPTIONAL in schema ||
     hasDefault(schema) ||
-    Boolean(schema.anyOf && schema.anyOf.some((v) => isNullable(v as OpenAPIV3.SchemaObject)))
+    Boolean(schema.anyOf && schema.anyOf.some((v) => isNullable(v as OpenAPIV3.SchemaObject))) ||
+    isOptionalObjectType(schema)
   );
 };
 

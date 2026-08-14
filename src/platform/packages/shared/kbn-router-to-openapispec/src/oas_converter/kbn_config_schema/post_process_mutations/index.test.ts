@@ -39,6 +39,29 @@ describe('postProcessMutations', () => {
     });
   });
 
+  test('does not mark an object as required when all of its properties are optional', () => {
+    const parsed = joi2JsonInternal(
+      schema.object({ nested: schema.object({ a: schema.maybe(schema.string()) }) }).getSchema()
+    );
+    postProcessMutations({
+      ctx: createCtx(),
+      schema: parsed,
+    });
+    expect(parsed).toEqual({
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        nested: {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            a: { type: 'string' },
+          },
+        },
+      },
+    });
+  });
+
   test('adds null to typed nullable enums that bypass processEnum', () => {
     const parsed = {
       type: 'integer',

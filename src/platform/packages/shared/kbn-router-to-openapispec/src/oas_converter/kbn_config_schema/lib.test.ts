@@ -571,7 +571,7 @@ describe('convert', () => {
           $ref: '#/components/schemas/nestedReusedSharedSchema',
         },
       },
-      required: ['nested', 'requiredRef'],
+      required: ['requiredRef'],
       type: 'object',
     });
   });
