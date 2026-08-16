@@ -12,7 +12,6 @@ import { lastValueFrom } from 'rxjs';
 import type { Logger } from '@kbn/core/server';
 import type { IEsSearchResponse } from '@kbn/search-types';
 import { ES_SEARCH_STRATEGY, type ISearchSource } from '@kbn/data-plugin/common';
-import { INTERNAL_ENHANCED_ES_SEARCH_STRATEGY } from '@kbn/data-plugin/server';
 import { SearchCursor, type SearchCursorClients, type SearchCursorSettings } from './search_cursor';
 import { i18nTexts } from './i18n_texts';
 
@@ -41,30 +40,39 @@ export class SearchCursorScroll extends SearchCursor {
     const effectiveMaxConcurrentShardRequests =
       maxConcurrentShardRequests > 0 ? maxConcurrentShardRequests : undefined;
 
-    const searchParamsScan = {
-      params: {
-        ...searchBody,
-        index: this.indexPatternTitle,
-        scroll: scroll.duration(taskInstanceFields),
-        size: scroll.size,
-        ignore_throttled: includeFrozen ? false : undefined, // "true" will cause deprecation warnings logged in ES
-        max_concurrent_shard_requests: effectiveMaxConcurrentShardRequests,
-      },
+    const params = {
+      ...searchBody,
+      index: this.indexPatternTitle,
+      scroll: scroll.duration(taskInstanceFields),
+      size: scroll.size,
+      ignore_throttled: includeFrozen ? false : undefined, // "true" will cause deprecation warnings logged in ES
+      max_concurrent_shard_requests: effectiveMaxConcurrentShardRequests,
     };
 
-    const strategy = this.useInternalUser
-      ? INTERNAL_ENHANCED_ES_SEARCH_STRATEGY
-      : ES_SEARCH_STRATEGY;
+    // The scroll API has no equivalent in the enhanced (async) search strategy that
+    // backs internal-user requests, so it can't be routed through `data.search`. Call
+    // the ES client directly instead, the same way the subsequent scroll requests do.
+    if (this.useInternalUser) {
+      const rawResponse = await this.clients.es.asInternalUser.search(params, {
+        signal: this.abortController.signal,
+        maxRetries: 0, // retrying reporting jobs is handled in the task manager scheduling logic
+        requestTimeout: scroll.duration(taskInstanceFields),
+      });
+      return { rawResponse };
+    }
 
     return await lastValueFrom(
-      this.clients.data.search(searchParamsScan, {
-        strategy,
-        abortSignal: this.abortController.signal,
-        transport: {
-          maxRetries: 0, // retrying reporting jobs is handled in the task manager scheduling logic
-          requestTimeout: scroll.duration(taskInstanceFields),
-        },
-      })
+      this.clients.data.search(
+        { params },
+        {
+          strategy: ES_SEARCH_STRATEGY,
+          abortSignal: this.abortController.signal,
+          transport: {
+            maxRetries: 0, // retrying reporting jobs is handled in the task manager scheduling logic
+            requestTimeout: scroll.duration(taskInstanceFields),
+          },
+        }
+      )
     );
   }
 

@@ -106,6 +106,55 @@ describe('CSV Export Search Cursor', () => {
     });
   });
 
+  describe('with useInternalUser', () => {
+    beforeEach(async () => {
+      cursor = new TestSearchCursorScroll(
+        'test-index-pattern-string',
+        settings,
+        { data, es },
+        new AbortController(),
+        logger,
+        true
+      );
+
+      await cursor.initialize();
+    });
+
+    it('scans using the ES client directly instead of the data.search strategy', async () => {
+      const dataSearchSpy = jest.spyOn(data, 'search');
+      const internalSearchSpy = jest
+        .spyOn(es.asInternalUser, 'search')
+        .mockResolvedValue({ hits: { hits: [] } } as unknown as ReturnType<
+          typeof es.asInternalUser.search
+        >);
+
+      const searchSource = createSearchSourceMock();
+      await cursor.getPage(searchSource);
+
+      expect(dataSearchSpy).not.toBeCalled();
+      expect(internalSearchSpy).toBeCalledTimes(1);
+      expect(internalSearchSpy).toBeCalledWith(
+        {
+          fields: [],
+          query: { bool: { filter: [], must: [], must_not: [], should: [] } },
+          runtime_mappings: {},
+          script_fields: {},
+          stored_fields: ['*'],
+          ignore_throttled: undefined,
+          index: 'test-index-pattern-string',
+          max_concurrent_shard_requests: 5,
+          scroll: '10m',
+          size: 500,
+        },
+        {
+          signal: expect.any(AbortSignal),
+          maxRetries: 0,
+          requestTimeout: '10m',
+        }
+      );
+    });
+  });
+
   describe('with max_concurrent_shard_requests=0', () => {
     beforeEach(async () => {
       settings.maxConcurrentShardRequests = 0;
