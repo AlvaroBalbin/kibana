@@ -180,6 +180,27 @@ describe('AgentPolicyDeleteProvider', () => {
         expect(mutateAsyncMock).toHaveBeenCalledWith({ agentPolicyId: 'agent-policy-1' });
       });
     });
+
+    it('enables deletion when the policy name has a trailing space, e.g. from the macOS double-space period shortcut', async () => {
+      const nameWithTrailingSpace = 'Test Policy. ';
+      const { utils } = renderMenu({
+        agentPolicy: createAgentPolicy({ name: nameWithTrailingSpace }),
+        packagePolicies,
+      });
+      await openModal(utils);
+
+      const input = utils.getByTestId('deleteAgentPolicyNameConfirmationInput');
+      const confirmButton = utils.getByTestId('confirmModalConfirmButton');
+
+      // name typed exactly as displayed, without the invisible trailing space
+      fireEvent.change(input, { target: { value: 'Test Policy.' } });
+      expect(confirmButton).not.toBeDisabled();
+
+      fireEvent.click(confirmButton);
+      await waitFor(() => {
+        expect(mutateAsyncMock).toHaveBeenCalledWith({ agentPolicyId: 'agent-policy-1' });
+      });
+    });
   });
 
   describe('policy with active agents (non-agentless)', () => {

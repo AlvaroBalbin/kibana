@@ -166,7 +166,7 @@ export const AgentPolicyDeleteProvider: React.FunctionComponent<Props> = ({
   const requiresNameConfirmation =
     !isDeleteBlockedByAgents && (hasPackagePolicies || agentsCount > 0);
 
-  const isNameConfirmed = confirmName.trim() === agentPolicy?.name;
+  const isNameConfirmed = confirmName.trim() === agentPolicy?.name?.trim();
 
   const renderModal = () => {
     if (!isModalOpen) {
