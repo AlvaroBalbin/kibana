@@ -9,7 +9,7 @@
 
 import { SavedObjectsErrorHelpers } from '@kbn/core-saved-objects-server';
 import { createOrUpgradeSavedConfig } from '../create_or_upgrade_saved_config';
-import { CannotOverrideError } from '../ui_settings_errors';
+import { CannotOverrideError, ValidationSettingNotFoundError } from '../ui_settings_errors';
 import type { UiSettingsServiceOptions } from '../types';
 import { BaseUiSettingsClient } from './base_ui_settings_client';
 
@@ -100,8 +100,16 @@ export abstract class UiSettingsClientCommon extends BaseUiSettingsClient {
 
   async setMany(
     changes: Record<string, any>,
-    { handleWriteErrors }: { validateKeys?: boolean; handleWriteErrors?: boolean } = {}
+    { validateKeys, handleWriteErrors }: { validateKeys?: boolean; handleWriteErrors?: boolean } = {}
   ) {
+    if (validateKeys) {
+      const registeredSettings = this.getRegistered();
+      const unregisteredKey = Object.keys(changes).find((key) => !registeredSettings[key]);
+      if (unregisteredKey) {
+        throw new ValidationSettingNotFoundError(unregisteredKey);
+      }
+    }
+
     if (this.sharedUserProvidedCache) {
       this.log.debug(
         `[UiSettings] setMany invalidating SHARED cache for namespace=${this.namespace}`

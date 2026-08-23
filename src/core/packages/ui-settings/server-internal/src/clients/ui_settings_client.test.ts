@@ -164,6 +164,24 @@ describe('ui settings', () => {
 
       expect(savedObjectsClient.update).toHaveBeenCalledTimes(0);
     });
+
+    it('does not throw for an unregistered key by default', async () => {
+      const { uiSettings, savedObjectsClient } = setup();
+      await uiSettings.setMany({ notRegistered: 'value' });
+
+      expect(savedObjectsClient.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('throws ValidationSettingNotFoundError for an unregistered key when validateKeys is true', async () => {
+      const defaults = { foo: { schema: schema.string() } };
+      const { uiSettings, savedObjectsClient } = setup({ defaults });
+
+      await expect(
+        uiSettings.setMany({ foo: 'bar', notRegistered: 'value' }, { validateKeys: true })
+      ).rejects.toThrow(ValidationSettingNotFoundError);
+
+      expect(savedObjectsClient.update).toHaveBeenCalledTimes(0);
+    });
   });
 
   describe('#set()', () => {

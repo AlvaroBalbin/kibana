@@ -15,7 +15,7 @@ import type {
   InternalUiSettingsRequestHandlerContext,
   InternalUiSettingsRouter,
 } from '../../internal_types';
-import { CannotOverrideError } from '../../ui_settings_errors';
+import { CannotOverrideError, ValidationSettingNotFoundError } from '../../ui_settings_errors';
 
 const validate = {
   params: schema.object({
@@ -42,7 +42,7 @@ export function registerInternalSetRoute(router: InternalUiSettingsRouter) {
       const { key } = request.params;
       const { value } = request.body;
 
-      await uiSettingsClient.set(key, value);
+      await uiSettingsClient.setMany({ [key]: value }, { validateKeys: true });
 
       return response.ok({
         body: {
@@ -57,7 +57,11 @@ export function registerInternalSetRoute(router: InternalUiSettingsRouter) {
         });
       }
 
-      if (error instanceof CannotOverrideError || error instanceof ValidationError) {
+      if (
+        error instanceof CannotOverrideError ||
+        error instanceof ValidationError ||
+        error instanceof ValidationSettingNotFoundError
+      ) {
         return response.badRequest({ body: error });
       }
 

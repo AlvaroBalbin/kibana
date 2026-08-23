@@ -12,7 +12,7 @@ import { SavedObjectsErrorHelpers } from '@kbn/core-saved-objects-server';
 import type { KibanaRequest, KibanaResponseFactory } from '@kbn/core-http-server';
 import type { IUiSettingsClient } from '@kbn/core-ui-settings-server';
 import type { InternalUiSettingsRouter } from '../../internal_types';
-import { CannotOverrideError } from '../../ui_settings_errors';
+import { CannotOverrideError, ValidationSettingNotFoundError } from '../../ui_settings_errors';
 import type { InternalUiSettingsRequestHandlerContext } from '../../internal_types';
 
 const validate = {
@@ -31,7 +31,7 @@ export function registerInternalSetManyRoute(router: InternalUiSettingsRouter) {
     try {
       const { changes } = request.body;
 
-      await uiSettingsClient.setMany(changes);
+      await uiSettingsClient.setMany(changes, { validateKeys: true });
 
       return response.ok({
         body: {
@@ -46,7 +46,11 @@ export function registerInternalSetManyRoute(router: InternalUiSettingsRouter) {
         });
       }
 
-      if (error instanceof CannotOverrideError || error instanceof ValidationError) {
+      if (
+        error instanceof CannotOverrideError ||
+        error instanceof ValidationError ||
+        error instanceof ValidationSettingNotFoundError
+      ) {
         return response.badRequest({ body: error });
       }
 

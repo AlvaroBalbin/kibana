@@ -57,6 +57,15 @@ describe('ui settings service', () => {
           '[validation [custom]]: expected value of type [string] but got [number]'
         );
       });
+
+      it('rejects unregistered setting keys', async () => {
+        const response = await request
+          .post(root, '/api/kibana/settings/notRegistered')
+          .send({ value: 'test' })
+          .expect(400);
+
+        expect(response.body.message).toBe('Setting with a key [notRegistered] does not exist.');
+      });
     });
     describe('set many', () => {
       it('validates value', async () => {
@@ -68,6 +77,15 @@ describe('ui settings service', () => {
         expect(response.body.message).toBe(
           '[validation [custom]]: expected value of type [string] but got [number]'
         );
+      });
+
+      it('rejects unregistered setting keys', async () => {
+        const response = await request
+          .post(root, '/api/kibana/settings')
+          .send({ changes: { custom: '42', notRegistered: 'test' } })
+          .expect(400);
+
+        expect(response.body.message).toBe('Setting with a key [notRegistered] does not exist.');
       });
     });
 
@@ -145,6 +163,15 @@ describe('ui settings service', () => {
           '[validation [custom]]: expected value of type [string] but got [number]'
         );
       });
+
+      it('rejects unregistered setting keys', async () => {
+        const response = await request
+          .post(root, '/internal/kibana/settings/notRegistered')
+          .send({ value: 'test' })
+          .expect(400);
+
+        expect(response.body.message).toBe('Setting with a key [notRegistered] does not exist.');
+      });
     });
     describe('set many', () => {
       it('validates value', async () => {
@@ -156,6 +183,15 @@ describe('ui settings service', () => {
         expect(response.body.message).toBe(
           '[validation [custom]]: expected value of type [string] but got [number]'
         );
+      });
+
+      it('rejects unregistered setting keys', async () => {
+        const response = await request
+          .post(root, '/internal/kibana/settings')
+          .send({ changes: { custom: '42', notRegistered: 'test' } })
+          .expect(400);
+
+        expect(response.body.message).toBe('Setting with a key [notRegistered] does not exist.');
       });
     });
 

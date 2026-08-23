@@ -52,7 +52,10 @@ export interface IUiSettingsClient {
   /**
    * Writes multiple uiSettings values and marks them as set by the user.
    */
-  setMany: (changes: Record<string, any>) => Promise<void>;
+  setMany: (
+    changes: Record<string, any>,
+    options?: { validateKeys?: boolean; handleWriteErrors?: boolean }
+  ) => Promise<void>;
   /**
    * Writes uiSettings value and marks it as set by the user.
    */
