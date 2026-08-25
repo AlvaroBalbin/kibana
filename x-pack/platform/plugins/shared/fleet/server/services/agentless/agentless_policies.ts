@@ -625,7 +625,7 @@ export class AgentlessPoliciesServiceImpl implements AgentlessPoliciesService {
     } catch (e) {
       if (e instanceof FleetNotFoundError || SavedObjectsErrorHelpers.isNotFoundError(e)) {
         this.logger.warn(`Agent policy ${policyId} not found, cleaning up orphaned resources`);
-        await this.deleteOrphanedAgentlessResources(policyId, user);
+        await this.deleteOrphanedAgentlessResources(policyId, options, user);
         return;
       }
       throw e;
@@ -1176,19 +1176,52 @@ export class AgentlessPoliciesServiceImpl implements AgentlessPoliciesService {
     }
   }
 
-  private async deleteOrphanedAgentlessResources(policyId: string, user?: AuthenticatedUser) {
-    const packagePolicies = await this.packagePolicyService.findAllForAgentPolicy(
-      this.soClient,
-      policyId
-    );
+  private async deleteOrphanedAgentlessResources(
+    policyId: string,
+    options?: { force?: boolean },
+    user?: AuthenticatedUser
+  ) {
+    // Scope cleanup to agentless package policies only, this endpoint has no business
+    // touching regular Fleet package policies.
+    const packagePolicies = (
+      await this.packagePolicyService.findAllForAgentPolicy(this.soClient, policyId)
+    ).filter((packagePolicy) => packagePolicy.supports_agentless);
 
     if (packagePolicies.length > 0) {
-      await this.packagePolicyService.delete(
-        this.soClient,
-        this.esClient,
-        packagePolicies.map((pp) => pp.id),
-        { force: true, user: user ?? undefined, skipUnassignFromAgentPolicies: true }
+      // A package policy only assigned to the orphaned policy id has nothing left to
+      // unassign from, so it can be deleted outright. One still assigned to other, live
+      // agent policies is unassigned from the orphaned id instead of being deleted, mirroring
+      // how agentPolicyService.delete() handles package policies shared across agent policies.
+      const policiesWithSingleAP = packagePolicies.filter(
+        (packagePolicy) => packagePolicy.policy_ids.length <= 1
       );
+      const policiesWithMultipleAP = packagePolicies.filter(
+        (packagePolicy) => packagePolicy.policy_ids.length > 1
+      );
+
+      if (policiesWithSingleAP.length > 0) {
+        await this.packagePolicyService.delete(
+          this.soClient,
+          this.esClient,
+          policiesWithSingleAP.map((pp) => pp.id),
+          { force: options?.force, user: user ?? undefined, skipUnassignFromAgentPolicies: true }
+        );
+      }
+
+      if (policiesWithMultipleAP.length > 0) {
+        await this.packagePolicyService.bulkUpdate(
+          this.soClient,
+          this.esClient,
+          policiesWithMultipleAP.map((packagePolicy) => {
+            const newPolicyIds = packagePolicy.policy_ids.filter((id) => id !== policyId);
+            return {
+              ...packagePolicy,
+              policy_id: newPolicyIds[0],
+              policy_ids: newPolicyIds,
+            };
+          })
+        );
+      }
     }
 
     try {
